@@ -21,6 +21,11 @@ public class AlunoServiceImpl implements AlunoService{
 	public Collection<Aluno> listar() {
 		return alunoDao.listar();
 	}
+
+	@Override
+	public void salvar(Aluno aluno) {
+		alunoDao.salvar(aluno);		
+	}
 	
 	
 

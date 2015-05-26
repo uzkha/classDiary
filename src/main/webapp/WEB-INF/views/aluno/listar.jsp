@@ -3,7 +3,16 @@
 	<div class="panel panel-default">
 		<div class="panel-heading">Alunos</div>
 		<div class="panel-body">
-			<div class="error">${message}</div>
+		<c:if test="${message != null}">
+			<div id="result-form" class="alert alert-success" role="alert">
+				${message}
+			</div>
+		</c:if>
+		<c:if test="${messageError != null}">
+			<div id="result-form" class="alert alert-danger" role="alert">
+				${messageError}
+			</div>
+		</c:if>
 
 			<a onclick="ajaxGet('/classdiary/aluno/adicionar')" href="javascript:;"><img
 				src="${pageContext.request.contextPath}/resources/img/add.png"

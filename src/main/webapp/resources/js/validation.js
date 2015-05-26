@@ -1,5 +1,5 @@
 $(document).ready(function () {
-    $("#formAgencia").validate({
+    $("#formAluno").validate({
     	
     	 //envia o formulario via ajax
         submitHandler: function(form){
@@ -8,7 +8,7 @@ $(document).ready(function () {
 			
 			$.ajax({
 				type: "POST",
-				url: "/springbank/agencia/salvar",
+				url: "/classdiary/aluno/salvar",
 				data: dados,
 				success: function( data )
 				{
@@ -25,7 +25,15 @@ $(document).ready(function () {
                 // campoNome será obrigatório (required) e terá tamanho mínimo (minLength)
                 required: true, minlength: 3
            },
-            "cidade": {
+            "email": {
+                // campoNome será obrigatório (required) e terá tamanho mínimo (minLength)
+                required: true, email:true
+            },
+            "telefone": {
+                // campoNome será obrigatório (required) e terá tamanho mínimo (minLength)
+                required: true, 
+            },
+            "endereco": {
                 // campoNome será obrigatório (required) e terá tamanho mínimo (minLength)
                 required: true,
             },

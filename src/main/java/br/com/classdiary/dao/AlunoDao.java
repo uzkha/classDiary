@@ -17,4 +17,8 @@ public class AlunoDao extends AbstractClassSessionFactory{
 		return alunos;
 	}
 
+	public void salvar(Aluno aluno) {
+		super.getSession().saveOrUpdate(aluno);	
+	}
+
 }
