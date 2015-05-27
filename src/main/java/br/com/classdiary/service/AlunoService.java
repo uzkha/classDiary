@@ -9,5 +9,9 @@ public interface AlunoService {
 	public Collection<Aluno> listar();
 	
 	public void salvar(Aluno aluno);
+	
+	public Aluno findById(Long id);
+	
+	public void deletar(Long id);
 
 }

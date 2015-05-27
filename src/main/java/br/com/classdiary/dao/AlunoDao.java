@@ -21,4 +21,15 @@ public class AlunoDao extends AbstractClassSessionFactory{
 		super.getSession().saveOrUpdate(aluno);	
 	}
 
+	public Aluno findById(Long id) {
+		Aluno aluno = (Aluno)getSession().load(Aluno.class, id);
+		return aluno;
+	}
+
+	public void deletar(Long id) {
+		Aluno aluno = new Aluno();
+		aluno.setId(id);
+		getSession().delete(aluno);		
+	}
+
 }

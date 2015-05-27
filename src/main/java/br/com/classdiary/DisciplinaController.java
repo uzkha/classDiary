@@ -14,24 +14,24 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
-import br.com.classdiary.model.Aluno;
-import br.com.classdiary.service.AlunoService;
+import br.com.classdiary.model.Disciplina;
+import br.com.classdiary.service.DisciplinaService;
 
 
 @Controller
-@RequestMapping(value= "/aluno")
-public class AlunoController {
+@RequestMapping(value= "/disciplina")
+public class DisciplinaController {
 	
 	@Autowired
-	private AlunoService alunoService;
+	private DisciplinaService disciplinaService;
 	
 	@RequestMapping(value="", method = RequestMethod.GET)
 	public ModelAndView listar(Locale locale, Model model) {
 		
 		ModelAndView modelView = new ModelAndView();
 		
-		modelView.addObject("alunos", alunoService.listar());	
-		modelView.setViewName("aluno/listar");
+		modelView.addObject("disciplinas", disciplinaService.listar());	
+		modelView.setViewName("disciplina/listar");
 		
 		return modelView;		
 		
@@ -41,7 +41,7 @@ public class AlunoController {
 	public ModelAndView adicionar(Locale locale, Model model) {
 		
 		ModelAndView modelView = new ModelAndView();	
-		modelView.setViewName("aluno/form");
+		modelView.setViewName("disciplina/form");
 		
 		return modelView;		
 		
@@ -49,24 +49,24 @@ public class AlunoController {
 	
 	
 	@RequestMapping(value = "/salvar", method = RequestMethod.POST)
-	public ModelAndView salvar(Locale locale, ModelMap model, Aluno aluno) {
+	public ModelAndView salvar(Locale locale, ModelMap model, Disciplina disciplina) {
 		
 		ModelAndView modelView = new ModelAndView();
 		
 		try{				
 			
-			alunoService.salvar(aluno);			
-			modelView.addObject("alunos", alunoService.listar());
+			disciplinaService.salvar(disciplina);			
+			modelView.addObject("disciplinas", disciplinaService.listar());
 			modelView.addObject("message", "Cadastro efetuado/alterado com sucesso!");
-			modelView.setViewName("aluno/listar");
+			modelView.setViewName("disciplina/listar");
 			
 			return modelView;		
 			
 		}catch (ServiceException e){
 			
-			modelView.addObject("aluno", aluno);
+			modelView.addObject("disciplina", disciplina);
 			modelView.addObject("messageError", e.getMessage());
-			modelView.setViewName("aluno/form");
+			modelView.setViewName("disciplina/form");
 			return modelView;			
 		}
 		
@@ -78,9 +78,9 @@ public class AlunoController {
 		
 		ModelAndView modelView = new ModelAndView();	
 		
-		Aluno aluno = alunoService.findById(id);
-		modelView.addObject("aluno", aluno);
-		modelView.setViewName("aluno/form");
+		Disciplina disciplina = disciplinaService.findById(id);
+		modelView.addObject("disciplina", disciplina);
+		modelView.setViewName("disciplina/form");
 		
 		return modelView;		
 		
@@ -90,18 +90,18 @@ public class AlunoController {
 	public ModelAndView deletar(Locale locale, Model model, @PathVariable("id") Long id) {
 		
 		ModelAndView modelView = new ModelAndView();	
-		modelView.setViewName("aluno/listar");
+		modelView.setViewName("disciplina/listar");
 		
 		try{
 			
-			alunoService.deletar(id);
-			modelView.addObject("alunos", alunoService.listar());
+			disciplinaService.deletar(id);
+			modelView.addObject("disciplinas", disciplinaService.listar());
 			modelView.addObject("message", "Cadastro removido com sucesso!");
 						
 		
 		}catch(ServiceException e){
 			
-			modelView.addObject("alunos", alunoService.listar());
+			modelView.addObject("disciplinas", disciplinaService.listar());
 			modelView.addObject("messageError", e.getMessage());
 		
 		}

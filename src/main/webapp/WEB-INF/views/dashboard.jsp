@@ -74,8 +74,8 @@
                 <div class="list-group">
                     <a href="#" class="list-group-item active">Cadastros</a>
                     <a href="javascript:;" onclick="ajaxGet('/classdiary/aluno/')" class="list-group-item">Alunos</a>
-                    <a href="#" class="list-group-item">Disciplinas</a>
-                    <a href="#" class="list-group-item">Professor</a>
+                    <a href="javascript:;" onclick="ajaxGet('/classdiary/disciplina/')" class="list-group-item">Disciplinas</a>
+                    <a href="javascript:;" onclick="ajaxGet('/classdiary/professor/')" class="list-group-item">Professor</a>
                     <a href="#" class="list-group-item">Turma</a>
                 </div>
             </div>  

@@ -10,12 +10,12 @@ import javax.validation.constraints.NotNull;
 import org.hibernate.annotations.GenericGenerator;
 
 @Entity
-@Table(name="aluno")
-public class Aluno {
+@Table(name="professor")
+public class Professor {
 
 	@Id	
-	@GenericGenerator(name="alunoid" , strategy="increment")
-	@GeneratedValue(generator="alunoid") 
+	@GenericGenerator(name="professorid" , strategy="increment")
+	@GeneratedValue(generator="professorid") 
 	private Long id;
 	
 	@Column(length = 100)

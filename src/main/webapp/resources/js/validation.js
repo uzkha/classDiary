@@ -43,7 +43,7 @@ $(document).ready(function () {
 });
 
 $(document).ready(function () {
-    $("#formUsuario").validate({
+    $("#formProfessor").validate({
     	
     	 //envia o formulario via ajax
         submitHandler: function(form){
@@ -52,7 +52,7 @@ $(document).ready(function () {
 			
 			$.ajax({
 				type: "POST",
-				url: "/springbank/usuario/salvar",
+				url: "/classdiary/professor/salvar",
 				data: dados,
 				success: function( data )
 				{
@@ -65,19 +65,54 @@ $(document).ready(function () {
     	
         // Define as regras
         rules: {
-            login: {
+            "nome": {
                 // campoNome será obrigatório (required) e terá tamanho mínimo (minLength)
                 required: true, minlength: 3
-            },                       
-            senha: {
-                // campoEmail será obrigatório (required) e precisará ser um e-mail válido (email)
-                required: true, minlength: 5
+           },
+            "email": {
+                // campoNome será obrigatório (required) e terá tamanho mínimo (minLength)
+                required: true, email:true
             },
-            senhaConfirmacao: {
-                // campoEmail será obrigatório (required) e precisará ser um e-mail válido (email)
-                required: true, minlength: 5, equalTo: "#senha"
+            "telefone": {
+                // campoNome será obrigatório (required) e terá tamanho mínimo (minLength)
+                required: true, 
+            },
+            "endereco": {
+                // campoNome será obrigatório (required) e terá tamanho mínimo (minLength)
+                required: true,
+            },
+         },
+    });
 
-            },
+});
+
+$(document).ready(function () {
+    $("#formDisciplina").validate({
+    	
+    	 //envia o formulario via ajax
+        submitHandler: function(form){
+        	
+			var dados = $( form ).serialize();      
+			
+			$.ajax({
+				type: "POST",
+				url: "/classdiary/disciplina/salvar",
+				data: dados,
+				success: function( data )
+				{
+					$( ".view_principal" ).html( data );
+				}
+			});
+
+			return false;
+		},
+    	
+        // Define as regras
+        rules: {
+            nome: {
+                // campoNome será obrigatório (required) e terá tamanho mínimo (minLength)
+                required: true, minlength: 3
+            },                      
         },
     });
 
