@@ -1,7 +1,7 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <div id="container-large">
 	<div class="panel panel-default">
-		<div class="panel-heading">Professores</div>
+		<div class="panel-heading">Turmas</div>
 		<div class="panel-body">
 		<c:if test="${message != null}">
 			<div id="result-form" class="alert alert-success" role="alert">
@@ -14,34 +14,36 @@
 			</div>
 		</c:if>
 
-			<a onclick="ajaxGet('/classdiary/professor/adicionar')" href="javascript:;"><img
+			<a onclick="ajaxGet('/classdiary/turma/adicionar')" href="javascript:;"><img
 				src="${pageContext.request.contextPath}/resources/img/add.png"
 				width="24" height="24" data-toggle="tooltip"
-				title="Adicionar Agencia"></a>
+				title="Adicionar Turma"></a>
 
 			<table class="table table-striped table-hover">
 				<tr>
 					<th>Id</th>
-					<th>Nome</th>
-					<th>Telefone</th>
-					<th>Email</th>
+					<th>Nome</th>							
+					<th>&nbsp</th>		
 					<th>&nbsp</th>
 					<th>&nbsp</th>
 				</tr>
-				<c:forEach var="professor" items="${professores}" varStatus="id">
+				<c:forEach var="turma" items="${turmas}" varStatus="id">
 					<tr>
-						<td>${professor.id}</td>
-						<td>${professor.nome}</td>						
-						<td>${professor.telefone}</td>
-						<td>${professor.email}</td>
-
-						<td><a onclick="ajaxGet('/classdiary/professor/editar/${professor.id}')" href="javascript:;"><img
+						<td>${turma.id}</td>
+						<td>${turma.nome}</td>										
+						
+						<td><a onclick="ajaxGet('/classdiary/turma/disciplinas/${turma.id}')" href="javascript:;"><img
+								src="${pageContext.request.contextPath}/resources/img/disciplina.png"
+								width="18" height="18" data-toggle="tooltip" title="Disciplinas"></a>
+						</td>
+						
+						<td><a onclick="ajaxGet('/classdiary/turma/editar/${turma.id}')" href="javascript:;"><img
 								src="${pageContext.request.contextPath}/resources/img/update.png"
 								width="18" height="18" data-toggle="tooltip" title="Editar"></a>
 						</td>
 
 						<td><a href="javascript:;"
-							onclick="deleteItem(event, '${professor.nome}', '/classdiary/professor/deletar/${professor.id}')"><img
+							onclick="deleteItem(event, '${turma.nome}', '/classdiary/turma/deletar/${turma.id}')"><img
 								src="${pageContext.request.contextPath}/resources/img/delete.png"
 								height="18" data-toggle="tooltip" title="Excluir"></a></td>
 
@@ -51,4 +53,3 @@
 			</table>
 		</div>
 	</div>
-</div>

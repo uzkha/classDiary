@@ -118,8 +118,10 @@ $(document).ready(function () {
 
 });
 
+
+
 $(document).ready(function () {
-    $("#formTransacao").validate({
+    $("#formTurma").validate({
     	
     	 //envia o formulario via ajax
         submitHandler: function(form){
@@ -128,103 +130,7 @@ $(document).ready(function () {
 			
 			$.ajax({
 				type: "POST",
-				url: "/springbank/transacao/salvar",
-				data: dados,
-				success: function( data )
-				{
-					$( ".view_principal" ).html( data );
-				}
-			});
-
-			return false;
-		},
-        // Define as regras
-        rules: {
-            contaId: {
-                // campoNome será obrigatório (required) e terá tamanho mínimo (minLength)
-                required: true,
-            },                       
-            tipoTransacao: {
-                // campoEmail será obrigatório (required) e precisará ser um e-mail válido (email)
-                required: true,
-            },
-            dataMovimento: {
-                // campoEmail será obrigatório (required) e precisará ser um e-mail válido (email)
-                required: true, 
-
-            },
-            valor: {
-                // campoEmail será obrigatório (required) e precisará ser um e-mail válido (email)
-                required: true, number: true,
-
-            },
-        },
-    });
-
-});
-
-$(document).ready(function () {
-    $("#formConta").validate({
-    	
-    	 //envia o formulario via ajax
-        submitHandler: function(form){
-        	
-			var dados = $( form ).serialize();      
-			
-			$.ajax({
-				type: "POST",
-				url: "/springbank/conta/salvar",
-				data: dados,
-				success: function( data )
-				{
-					$( ".view_principal" ).html( data );
-				}
-			});
-
-			return false;
-		},
-    	
-        // Define as regras
-        rules: {
-            clienteId: {
-                // campoNome será obrigatório (required) e terá tamanho mínimo (minLength)
-                required: true,
-            },                       
-            gerenteId: {
-                // campoEmail será obrigatório (required) e precisará ser um e-mail válido (email)
-                required: true,
-            },
-            agenciaId: {
-                // campoEmail será obrigatório (required) e precisará ser um e-mail válido (email)
-                required: true, 
-
-            },
-            saldo: {
-                // campoEmail será obrigatório (required) e precisará ser um e-mail válido (email)
-                required: true, number: true
-
-            },
-            limite: {
-                // campoEmail será obrigatório (required) e precisará ser um e-mail válido (email)
-                required: true, number: true
-
-            },
-        },
-    });
-
-});
-
-$(document).ready(function () {
-    $("#formGerente").validate({
-    	
-  	   //envia o formulario via ajax
-        submitHandler: function(form){
-        	
-			var dados = $( form ).serialize();      
-			
-			$.ajax({
-				type: "POST",
-				url: "/springbank/gerente/salvar",
+				url: "/classdiary/turma/salvar",
 				data: dados,
 				success: function( data )
 				{
@@ -239,95 +145,9 @@ $(document).ready(function () {
         rules: {
             nome: {
                 // campoNome será obrigatório (required) e terá tamanho mínimo (minLength)
-                required: true,
-            },                       
-            cpfCnpj: {
-                // campoEmail será obrigatório (required) e precisará ser um e-mail válido (email)
-                required: true,
-            },
-            email: {
-                // campoEmail será obrigatório (required) e precisará ser um e-mail válido (email)
-                required: true, email: true,
-
-            },
-            telefone: {
-                // campoEmail será obrigatório (required) e precisará ser um e-mail válido (email)
-                required: true, 
-
-            },
-            endereco: {
-                // campoEmail será obrigatório (required) e precisará ser um e-mail válido (email)
-                required: true, 
-
-            },
-            cidade: {
-                // campoEmail será obrigatório (required) e precisará ser um e-mail válido (email)
-                required: true, 
-
-            },
-            dataContratacao: {
-                // campoEmail será obrigatório (required) e precisará ser um e-mail válido (email)
-                required: true, 
-
-            },
-            
+                required: true, minlength: 3
+            },                      
         },
-       
-    });
-
-});
-
-$(document).ready(function () {
-    $("#formCliente").validate({    
-    	
-    	 //envia o formulario via ajax
-        submitHandler: function(form){
-        	
-			var dados = $( form ).serialize();      
-			
-			$.ajax({
-				type: "POST",
-				url: "/springbank/cliente/salvar",
-				data: dados,
-				success: function( data )
-				{
-					$( ".view_principal" ).html( data );
-				}
-			});
-
-			return false;
-		},
-    	
-        // Define as regras
-        rules: {
-        	        	
-            nome: {
-                // campoNome será obrigatório (required) e terá tamanho mínimo (minLength)
-                required: true, minlength: 3
-            },                       
-            endereco: {
-                // campoEmail será obrigatório (required) e precisará ser um e-mail válido (email)
-                required: true, minlength: 3
-            },
-            cpfCnpj: {
-                // campoEmail será obrigatório (required) e precisará ser um e-mail válido (email)
-                required: true, minlength: 11, number: true, maxlength: 11
-            },
-            email: {
-                // campoEmail será obrigatório (required) e precisará ser um e-mail válido (email)
-                required: true, email:true
-            },
-            telefone: {
-                // campoEmail será obrigatório (required) e precisará ser um e-mail válido (email)
-                required: true
-            },
-            cidade: {
-                // campoEmail será obrigatório (required) e precisará ser um e-mail válido (email)
-                required: true, minlength: 3
-            },
-       
-        },
-    
     });
 
 });
