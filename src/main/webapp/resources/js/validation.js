@@ -13,7 +13,18 @@ $(document).ready(function () {
 				success: function( data )
 				{
 					$( ".view_principal" ).html( data );
-				}
+				},
+				error: function(XMLHttpRequest, textStatus, errorThrown) {		    
+					
+					var mensagem = XMLHttpRequest.responseText;		
+					
+					var naoFunction = function() {
+						return;
+					};		
+					//mostra modal com erro
+					showError(mensagem, naoFunction, 'Erro de Requisição');
+					
+				 }
 			});
 
 			return false;
@@ -57,7 +68,18 @@ $(document).ready(function () {
 				success: function( data )
 				{
 					$( ".view_principal" ).html( data );
-				}
+				},
+				error: function(XMLHttpRequest, textStatus, errorThrown) {		    
+					
+					var mensagem = XMLHttpRequest.responseText;		
+					
+					var naoFunction = function() {
+						return;
+					};		
+					//mostra modal com erro
+					showError(mensagem, naoFunction, 'Erro de Requisição');
+					
+				 }
 			});
 
 			return false;
@@ -101,7 +123,18 @@ $(document).ready(function () {
 				success: function( data )
 				{
 					$( ".view_principal" ).html( data );
-				}
+				},
+				error: function(XMLHttpRequest, textStatus, errorThrown) {		    
+					
+					var mensagem = XMLHttpRequest.responseText;		
+					
+					var naoFunction = function() {
+						return;
+					};		
+					//mostra modal com erro
+					showError(mensagem, naoFunction, 'Erro de Requisição');
+					
+				 }
 			});
 
 			return false;
@@ -135,7 +168,18 @@ $(document).ready(function () {
 				success: function( data )
 				{
 					$( ".view_principal" ).html( data );
-				}
+				},
+				error: function(XMLHttpRequest, textStatus, errorThrown) {		    
+					
+					var mensagem = XMLHttpRequest.responseText;		
+					
+					var naoFunction = function() {
+						return;
+					};		
+					//mostra modal com erro
+					showError(mensagem, naoFunction, 'Erro de Requisição');
+					
+				 }
 			});
 
 			return false;
@@ -146,6 +190,50 @@ $(document).ready(function () {
             nome: {
                 // campoNome será obrigatório (required) e terá tamanho mínimo (minLength)
                 required: true, minlength: 3
+            },                      
+        },
+    });
+
+});
+
+
+$(document).ready(function () {
+    $("#formTurmaDisciplina").validate({
+    	
+    	 //envia o formulario via ajax
+        submitHandler: function(form){
+        	
+			var dados = $( form ).serialize();      
+			
+			$.ajax({
+				type: "POST",
+				url: "/classdiary/turma/salvarDisciplina",
+				data: dados,
+				success: function( data )
+				{
+					$( ".view_principal" ).html( data );
+				},
+				error: function(XMLHttpRequest, textStatus, errorThrown) {		    
+					
+					var mensagem = XMLHttpRequest.responseText;		
+					
+					var naoFunction = function() {
+						return;
+					};		
+					//mostra modal com erro
+					showError(mensagem, naoFunction, 'Erro de Requisição');
+					
+				 }
+			});
+
+			return false;
+		},
+    	
+        // Define as regras
+        rules: {
+            disciplinas: {
+                // campoNome será obrigatório (required) e terá tamanho mínimo (minLength)
+                required: true,
             },                      
         },
     });

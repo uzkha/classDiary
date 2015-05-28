@@ -153,7 +153,7 @@
 
 <div id="div-componente-falha-requisicao" class="modal fade">
 
-	<div class="modal-dialog modal-sm">
+	<div class="modal-dialog">
 
 		<div class="modal-content">
 
@@ -182,6 +182,26 @@
 
 	</div>
 
+</div>
+
+<div id="div-componente-falha-requisicao" class="modal fade">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal"
+					aria-hidden="true">&times;</button>
+				<h4 id="h-componente-falha-requisicao-titulo" class="modal-title">Falha
+					na Requisição</h4>
+			</div>
+			<div class="modal-body">
+				<p id="p-componente-falha-requisicao-mensagem">MENSAGEM</p>
+			</div>
+			<div class="modal-footer">
+				<button id="btn-componente-falha-requisicao-fechar" type="button"
+					class="btn btn-default" data-dismiss="modal">Fechar</button>
+			</div>
+		</div>
+	</div>
 </div>
 
 </html>

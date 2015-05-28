@@ -1,12 +1,15 @@
 package br.com.classdiary.service;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import br.com.classdiary.dao.TurmaDao;
+import br.com.classdiary.model.Disciplina;
 import br.com.classdiary.model.Turma;
 
 
@@ -35,6 +38,11 @@ public class TurmaServiceImpl implements TurmaService{
 	@Override
 	public void deletar(Long id) {
 		turmaDao.deletar(id);
+	}
+
+	@Override
+	public List<Disciplina> buscaDisciplinas(Long id) {
+		return turmaDao.buscaDisciplinas(id);
 	}	
 
 }

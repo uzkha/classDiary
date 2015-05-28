@@ -1,5 +1,7 @@
 package br.com.classdiary;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 
@@ -59,7 +61,14 @@ public class TurmaController {
 		
 		ModelAndView modelView = new ModelAndView();
 		
-		try{				
+		try{		
+			
+			//recupera lista
+			if(turma.getId() != null){
+				Turma turmaOld = turmaService.findById(turma.getId());
+				turma.setDisciplinas(turmaOld.getDisciplinas());
+			}
+			
 			
 			turmaService.salvar(turma);			
 			modelView.addObject("turmas", turmaService.listar());
@@ -150,19 +159,27 @@ public class TurmaController {
 	
 	
 	@RequestMapping(value = "/salvarDisciplina", method = RequestMethod.POST)
-	public ModelAndView salvarDisciplina(Locale locale, ModelMap model, Long turmaId, List<Disciplina> disciplinas) {
+	public ModelAndView salvarDisciplina(Locale locale, ModelMap model, Long turmaId, Long[] disciplinas ) {
 		
 		ModelAndView modelView = new ModelAndView();
 		
 		try{				
 			
+			ArrayList<Disciplina> listaDisciplina = new ArrayList<Disciplina>();
 			Turma turma = turmaService.findById(turmaId);
 			
 			//limpa a lista de disciplinas
 			turma.getDisciplinas().clear();
 			
-			//seta as disciplinas vinda da view
-			turma.setDisciplinas(disciplinas);
+			 for (int i = 0; i < disciplinas.length; i++) {
+				 
+				 Disciplina disciplina = disciplinaService.findById(disciplinas[i]);				 
+				 listaDisciplina.add(disciplina);
+			  }
+			
+			//seta a lista de disciplinas na turma
+			turma.setDisciplinas(listaDisciplina);
+			
 			
 			//salvar turma disciplina
 			turmaService.salvar(turma);		
