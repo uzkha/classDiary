@@ -11,7 +11,6 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
@@ -30,7 +29,7 @@ public class Turma {
 	@NotNull
 	private String nome;
 	
-	@ManyToMany(cascade=CascadeType.ALL, fetch=FetchType.EAGER)
+	@ManyToMany(cascade=CascadeType.ALL, fetch=FetchType.LAZY)
     @JoinTable(name="turma_disciplina", joinColumns={@JoinColumn(name="turma_id", referencedColumnName="id")}, inverseJoinColumns={@JoinColumn(name="disciplina_id", referencedColumnName="id")})
 	private List<Disciplina> disciplinas;
 	

@@ -63,14 +63,16 @@ public class TurmaController {
 		
 		try{		
 			
-			//recupera lista
+			//recupera lista caso update
 			if(turma.getId() != null){
-				Turma turmaOld = turmaService.findById(turma.getId());
-				turma.setDisciplinas(turmaOld.getDisciplinas());
-			}
+				Turma turmaOld = turmaService.findById(turma.getId());				
+				turmaOld.setNome(turma.getNome());
+				turmaService.salvar(turmaOld);				
+			}else{
+				turmaService.salvar(turma);						
+			}			
 			
-			
-			turmaService.salvar(turma);			
+				
 			modelView.addObject("turmas", turmaService.listar());
 			modelView.addObject("message", "Cadastro efetuado/alterado com sucesso!");
 			modelView.setViewName("turma/listar");
@@ -152,6 +154,33 @@ public class TurmaController {
 		modelView.addObject("disciplinas", disciplinaService.listar());
 		modelView.addObject("turmaId", id);
 		modelView.setViewName("turma/disciplinaEditar");
+		
+		return modelView;		
+		
+	}
+	
+	
+	@RequestMapping(value = "/disciplinaDeletar/{id}/{disciplinaId}", method = RequestMethod.GET)
+	public ModelAndView disciplinasDeletar(Locale locale, Model model, @PathVariable("id") Long id, @PathVariable("disciplinaId") Long disciplinaId) {
+		
+		ModelAndView modelView = new ModelAndView();	
+		
+		Turma turma = turmaService.findById(id);
+		Disciplina disciplina = disciplinaService.findById(disciplinaId);
+		
+		//remove o item da lista
+		turma.getDisciplinas().remove(disciplina);
+		
+		try{
+			turmaService.salvar(turma);
+			modelView.addObject("message", "Disciplina removida com sucesso!");
+		}catch (ServiceException e){
+			modelView.addObject("messageError", e.getMessage());
+		}
+				
+		modelView.addObject("disciplinas", turma.getDisciplinas());		
+		modelView.addObject("turmaId", id);
+		modelView.setViewName("turma/listaDisciplinas");
 		
 		return modelView;		
 		

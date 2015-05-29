@@ -40,9 +40,4 @@ public class TurmaServiceImpl implements TurmaService{
 		turmaDao.deletar(id);
 	}
 
-	@Override
-	public List<Disciplina> buscaDisciplinas(Long id) {
-		return turmaDao.buscaDisciplinas(id);
-	}	
-
 }

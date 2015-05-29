@@ -16,7 +16,5 @@ public interface TurmaService {
 	public Turma findById(Long id);
 	
 	public void deletar(Long id);
-	
-	public List<Disciplina> buscaDisciplinas(Long id);
 
 }

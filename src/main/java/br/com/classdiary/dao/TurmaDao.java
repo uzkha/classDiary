@@ -35,16 +35,4 @@ public class TurmaDao extends AbstractClassSessionFactory{
 		getSession().delete(turma);		
 	}
 
-	public List<Disciplina> buscaDisciplinas(Long id) {
-		
-		String hql = "from Turma_disciplina where turma_id = :id"; 
-		Query query = getSession().createQuery(hql); 
-		query.setParameter("id", id);
-				
-		List<Disciplina> disciplinas = query.list();		
-		
-		return disciplinas;
-		
-	}
-
 }
