@@ -2,12 +2,13 @@
 <ul class="nav nav-tabs">
 	<li role="presentation"><a href="javascript:;" onclick="ajaxGet('/classdiary/turma/')">Inicio</a></li>
 	<li role="presentation"><a href="javascript:;" onclick="ajaxGet('/classdiary/turma/editar/${turmaId}')">Turma</a></li>	
-	<li role="presentation" class="active"><a href="#">Disciplinas</a></li> 
-	<li role="presentation"><a href="javascript:;" onclick="ajaxGet('/classdiary/turma/alunos/${turmaId}')">Alunos</a></li>
+	<li role="presentation"><a href="javascript:;" onclick="ajaxGet('/classdiary/turma/disciplinas/${turmaId}')">Disciplinas</a></li>
+	<li role="presentation" class="active"><a href="#">Alunos</a></li> 
+
 </ul>
 <div id="container-large">
 	<div class="panel panel-default">
-		<div class="panel-heading">Turmas</div>
+		<div class="panel-heading">Alunos</div>
 		<div class="panel-body">
 		<c:if test="${message != null}">
 			<div id="result-form" class="alert alert-success" role="alert">
@@ -20,7 +21,7 @@
 			</div>
 		</c:if>
 
-			<a onclick="ajaxGet('/classdiary/turma/disciplinasEditar/${turmaId}')" href="javascript:;"><img
+			<a onclick="ajaxGet('/classdiary/turma/alunosEditar/${turmaId}')" href="javascript:;"><img
 				src="${pageContext.request.contextPath}/resources/img/update.png"
 				width="24" height="24" data-toggle="tooltip"
 				title="Editar"></a>
@@ -28,16 +29,16 @@
 			<table class="table table-striped table-hover">
 				<tr>
 					<th>Id</th>
-					<th>Disciplina</th>							
+					<th>Aluno</th>							
 					<th>&nbsp</th>	
 				</tr>
-				<c:forEach var="disciplina" items="${disciplinas}" varStatus="id">
+				<c:forEach var="turmaaluno" items="${alunos}" varStatus="id">
 					<tr>
-						<td>${disciplina.id}</td>
-						<td>${disciplina.nome}</td>										
+						<td>${turmaaluno.aluno.id}</td>
+						<td>${turmaaluno.aluno.nome}</td>										
 
 						<td><a href="javascript:;"
-							onclick="deleteItem(event, '${disciplina.nome}', '/classdiary/turma/disciplinaDeletar/${turmaId}/${disciplina.id}')"><img
+							onclick="deleteItem(event, '${turmaaluno.aluno.nome}', '/classdiary/turma/alunoDeletar/${turmaId}/${turmaaluno.aluno.id}')"><img
 								src="${pageContext.request.contextPath}/resources/img/delete.png"
 								height="18" data-toggle="tooltip" title="Excluir"></a></td>
 

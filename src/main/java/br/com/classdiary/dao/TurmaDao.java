@@ -4,11 +4,14 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import org.hibernate.Criteria;
 import org.hibernate.Query;
+import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Repository;
 
 import br.com.classdiary.model.Disciplina;
 import br.com.classdiary.model.Turma;
+import br.com.classdiary.model.TurmaAluno;
 
 @Repository
 public class TurmaDao extends AbstractClassSessionFactory{
@@ -33,6 +36,15 @@ public class TurmaDao extends AbstractClassSessionFactory{
 		Turma turma = new Turma();
 		turma.setId(id);
 		getSession().delete(turma);		
+	}
+
+	public Collection<TurmaAluno> listarAlunos(Turma turma) {
+		
+		Criteria cr = getSession().createCriteria(TurmaAluno.class);
+		cr.add(Restrictions.eq("turma", turma));
+		List<TurmaAluno> turmaAlunos = cr.list();
+		
+		return turmaAlunos; 
 	}
 
 }

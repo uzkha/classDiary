@@ -22,14 +22,16 @@
 			<table class="table table-striped table-hover">
 				<tr>
 					<th>Id</th>
-					<th>Nome</th>					
+					<th>Nome</th>	
+					<th>Aulas</th>					
 					<th>&nbsp</th>
 					<th>&nbsp</th>
 				</tr>
 				<c:forEach var="disciplina" items="${disciplinas}" varStatus="id">
 					<tr>
 						<td>${disciplina.id}</td>
-						<td>${disciplina.nome}</td>					
+						<td>${disciplina.nome}</td>		
+						<td>${disciplina.numeroAula}</td>					
 						
 						<td><a onclick="ajaxGet('/classdiary/disciplina/editar/${disciplina.id}')" href="javascript:;"><img
 								src="${pageContext.request.contextPath}/resources/img/update.png"

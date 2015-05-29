@@ -11,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 import br.com.classdiary.dao.TurmaDao;
 import br.com.classdiary.model.Disciplina;
 import br.com.classdiary.model.Turma;
+import br.com.classdiary.model.TurmaAluno;
 
 
 @Service
@@ -38,6 +39,11 @@ public class TurmaServiceImpl implements TurmaService{
 	@Override
 	public void deletar(Long id) {
 		turmaDao.deletar(id);
+	}
+
+	@Override
+	public Collection<TurmaAluno> listarAlunos(Turma turma) {
+		return turmaDao.listarAlunos(turma);
 	}
 
 }

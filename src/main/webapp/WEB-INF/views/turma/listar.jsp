@@ -26,6 +26,7 @@
 					<th>&nbsp</th>		
 					<th>&nbsp</th>
 					<th>&nbsp</th>
+					<th>&nbsp</th>
 				</tr>
 				<c:forEach var="turma" items="${turmas}" varStatus="id">
 					<tr>
@@ -35,6 +36,11 @@
 						<td><a onclick="ajaxGet('/classdiary/turma/disciplinas/${turma.id}')" href="javascript:;"><img
 								src="${pageContext.request.contextPath}/resources/img/disciplina.png"
 								width="18" height="18" data-toggle="tooltip" title="Disciplinas"></a>
+						</td>
+						
+						<td><a onclick="ajaxGet('/classdiary/turma/alunos/${turma.id}')" href="javascript:;"><img
+								src="${pageContext.request.contextPath}/resources/img/aluno.png"
+								width="18" height="18" data-toggle="tooltip" title="Alunos"></a>
 						</td>
 						
 						<td><a onclick="ajaxGet('/classdiary/turma/editar/${turma.id}')" href="javascript:;"><img

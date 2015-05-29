@@ -19,6 +19,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import br.com.classdiary.model.Disciplina;
 import br.com.classdiary.model.Turma;
+import br.com.classdiary.model.TurmaAluno;
 import br.com.classdiary.service.DisciplinaService;
 import br.com.classdiary.service.TurmaService;
 
@@ -230,8 +231,22 @@ public class TurmaController {
 			modelView.setViewName("turma/disciplinaEditar");
 			
 			return modelView;		
-		}
+		}		
+	}
+	
+	
+	@RequestMapping(value = "/alunos/{id}", method = RequestMethod.GET)
+	public ModelAndView alunos(Locale locale, Model model, @PathVariable("id") Long id) {
 		
+		ModelAndView modelView = new ModelAndView();	
+		
+		Turma turma = turmaService.findById(id);
+		
+		modelView.addObject("alunos", turmaService.listarAlunos(turma));
+		modelView.addObject("turmaId", id);
+		modelView.setViewName("turma/listaAlunos");
+		
+		return modelView;		
 		
 	}
 }

@@ -4,7 +4,8 @@
 <ul class="nav nav-tabs">
   <li role="presentation"><a href="javascript:;" onclick="ajaxGet('/classdiary/turma/')">Inicio</a></li>
   <li role="presentation"><a href="javascript:;" onclick="ajaxGet('/classdiary/turma/editar/${turmaId}')">Turma</a></li>	
-   <li role="presentation" class="active"><a href="#">Disciplinas</a></li> 
+   <li role="presentation" class="active"><a href="#">Disciplinas</a></li>
+   <li role="presentation"><a href="javascript:;" onclick="ajaxGet('/classdiary/turma/alunos/${turma.id}')">Alunos</a></li> 
 </ul>
 <div id="container-large">
 	<div class="panel panel-default">
