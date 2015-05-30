@@ -9,6 +9,7 @@ import org.hibernate.Query;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Repository;
 
+import br.com.classdiary.model.Aluno;
 import br.com.classdiary.model.Disciplina;
 import br.com.classdiary.model.Turma;
 import br.com.classdiary.model.TurmaAluno;
@@ -38,13 +39,37 @@ public class TurmaDao extends AbstractClassSessionFactory{
 		getSession().delete(turma);		
 	}
 
-	public Collection<TurmaAluno> listarAlunos(Turma turma) {
+	public List<TurmaAluno> listarAlunos(Turma turma) {
 		
 		Criteria cr = getSession().createCriteria(TurmaAluno.class);
 		cr.add(Restrictions.eq("turma", turma));
 		List<TurmaAluno> turmaAlunos = cr.list();
 		
 		return turmaAlunos; 
+	}
+
+	public void salvarAluno(TurmaAluno turmaAluno) {
+		super.getSession().saveOrUpdate(turmaAluno);
+	}
+
+	public void deletarAluno(TurmaAluno turmaAluno) {
+		getSession().delete(turmaAluno);		
+	}
+
+	public void deletarAluno(List<TurmaAluno> listaTurmaAluno) {
+		for (TurmaAluno turmaAluno : listaTurmaAluno){
+			deletarAluno(turmaAluno);
+		}
+	}
+
+	public List<TurmaAluno> listarAlunos(Turma turma, Aluno aluno) {
+		Criteria cr = getSession().createCriteria(TurmaAluno.class);
+		cr.add(Restrictions.eq("turma", turma));
+		cr.add(Restrictions.eq("aluno", aluno));
+		List<TurmaAluno> turmaAlunos = cr.list();
+		
+		return turmaAlunos;
+		
 	}
 
 }
