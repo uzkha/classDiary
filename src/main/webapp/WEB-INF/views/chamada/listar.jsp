@@ -78,6 +78,8 @@
 </div>
 <script type="text/javascript">
 	function loadDisciplinas(){	
+		clearDisciplinas();
+		clearAulas();
 		var turma = $('#turma option:selected').index();
 		if(turma > 0){ 			 
 			//busca disciplinas da turma
@@ -108,6 +110,7 @@
 		}
 	}
 	function loadAulas(){	
+		clearAulas();
 		var disciplina = $('#disciplina option:selected').index();
 		if(disciplina > 0){ 			 
 			//busca disciplinas da turma
@@ -136,5 +139,12 @@
 
 			
 		}
+	}
+
+	function clearDisciplinas(){
+		$('#disciplina').children().remove().end().append('<option selected value="0">(Nenhum)</option>') ;
+	}
+	function clearAulas(){
+		$('#aula').children().remove().end().append('<option selected value="0">(Nenhum)</option>') ;
 	}
 </script>
