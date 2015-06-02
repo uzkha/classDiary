@@ -11,6 +11,8 @@ import javax.validation.constraints.NotNull;
 
 import org.hibernate.annotations.GenericGenerator;
 
+import br.com.classdiary.util.Frequencia;
+
 @Entity
 @Table(name="chamada")
 public class Chamada {
@@ -35,6 +37,10 @@ public class Chamada {
 	@Column
 	@NotNull
 	private int aula;
+	
+	@Column
+	@NotNull
+	private Frequencia frequencia;
 
 	public Long getId() {
 		return id;

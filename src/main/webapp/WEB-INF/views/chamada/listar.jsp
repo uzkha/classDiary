@@ -57,19 +57,13 @@
 		
 			<table class="table table-striped table-hover">
 				<tr>
-					<th>Id</th>
-					<th>Nome</th>
-					<th>Telefone</th>
-					<th>Email</th>
-					<th>&nbsp</th>
-					<th>&nbsp</th>
+					<th>Aluno</th>
+					<th>Frequencia</th>					
 				</tr>
 				<c:forEach var="aluno" items="${alunos}" varStatus="id">
-					<tr>
-						<td>${aluno.id}</td>
+					<tr>						
 						<td>${aluno.nome}</td>						
-						<td>${aluno.telefone}</td>
-						<td>${aluno.email}</td>
+						<td>${frequencia}</td>						
 					</tr>
 				</c:forEach>
 			</table>
