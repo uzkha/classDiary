@@ -83,9 +83,10 @@
 				<c:forEach var="turmaaluno" items="${alunos}" varStatus="id">
 					<tr id="tr_${turmaaluno.aluno.id}">						
 						<td>${turmaaluno.aluno.nome}</td>						
-						<td><input type="radio" name="frequencia${turmaaluno.aluno.id}" value="Presenca" >Presente
-							<input type="radio" name="frequencia${turmaaluno.aluno.id}" value="Falta" >Falto
-							<input type="radio" name="frequencia${turmaaluno.aluno.id}" value="Justificativa">Justifico
+						<td>
+						    <input type="radio" name="${turmaaluno.aluno.id}" onclick="setarFrequencia(this)" value="Presenca" >Presente
+							<input type="radio" name="${turmaaluno.aluno.id}" onclick="setarFrequencia(this)" value="Falta" >Falto
+							<input type="radio" name="${turmaaluno.aluno.id}" onclick="setarFrequencia(this)" value="Justificativa">Justifico
 						</td>						
 					</tr>
 				</c:forEach>
@@ -94,6 +95,41 @@
 	</div>
 </div>
 <script type="text/javascript">
+	function setarFrequencia(evento){
+		var frequencia = evento.value;
+		var alunoId    = evento.name;
+
+		alert($('#turma').val());
+
+		dataPost = {};
+		dataPost.idAluno = 1;
+		dataPost.idTuram = 14;
+		
+		//busca disciplinas da turma
+		$.ajax({
+			type: "GET",
+			url: "/classdiary/chamada/frequencia/"+alunoId+"/"+frequencia,
+			data: null,
+			success: function( data )
+			{
+				$( ".view_principal" ).html( data ); 
+			},
+			error: function(XMLHttpRequest, textStatus, errorThrown) {		    
+				
+				var mensagem = XMLHttpRequest.responseText;		
+				
+				var naoFunction = function() {
+					return;
+				};		
+				//mostra modal com erro
+				showError(mensagem, naoFunction, 'Erro de Requisição');
+				
+			 }
+		});
+		
+	}
+	
+
 	function loadDisciplinas(){	
 		clearDisciplinas();
 		clearAulas();

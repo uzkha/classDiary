@@ -2,8 +2,18 @@ package br.com.classdiary.util;
 
 public enum Frequencia {
 	
-	Falta,
-	Justificativa,
-	Presenca;
+	Falta("falta"),
+	Justificativa("justificativa"),
+	Presenca("presenca");
+	
+	private final String frequencia;
+	
+	private Frequencia(String frequencia){
+		this.frequencia = frequencia;
+	}
+	
+	private String getFrequencia(){
+		return this.frequencia;
+	}
 	
 }

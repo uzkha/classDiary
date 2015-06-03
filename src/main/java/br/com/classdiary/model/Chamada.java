@@ -84,5 +84,13 @@ public class Chamada {
 	public void setAula(int aula) {
 		this.aula = aula;
 	}
-	
+
+	public Frequencia getFrequencia() {
+		return frequencia;
+	}
+
+	public void setFrequencia(Frequencia frequencia) {
+		this.frequencia = frequencia;
+	}
+		
 }

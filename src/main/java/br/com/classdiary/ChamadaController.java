@@ -3,7 +3,10 @@ package br.com.classdiary;
 import java.util.List;
 import java.util.Locale;
 
+import javax.servlet.http.HttpSession;
+
 import org.hibernate.service.spi.ServiceException;
+import org.omg.CORBA.Request;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -15,12 +18,15 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import br.com.classdiary.model.Aluno;
+import br.com.classdiary.model.Chamada;
 import br.com.classdiary.model.Disciplina;
 import br.com.classdiary.model.Turma;
 import br.com.classdiary.model.TurmaAluno;
+import br.com.classdiary.service.AlunoService;
 import br.com.classdiary.service.ChamadaService;
 import br.com.classdiary.service.DisciplinaService;
 import br.com.classdiary.service.TurmaService;
+import br.com.classdiary.util.Frequencia;
 
 @Controller
 @RequestMapping(value= "/chamada")
@@ -31,6 +37,9 @@ public class ChamadaController {
 	
 	@Autowired
 	private DisciplinaService disciplinaService;
+	
+	@Autowired
+	private AlunoService alunoService;
 	
 	@Autowired
 	private ChamadaService chamadaService;
@@ -75,31 +84,87 @@ public class ChamadaController {
 	}
 	
 	@RequestMapping(value = "/pesquisar", method = RequestMethod.POST)
-	public ModelAndView pesquisar(Locale locale, ModelMap model, Long turmaId, Long disciplinaId, int aulaId) {
+	public ModelAndView pesquisar(Locale locale, HttpSession session, ModelMap model, Long turmaId, Long disciplinaId, int aulaId) {
 		
 		ModelAndView modelView = new ModelAndView();
 		
-			//busca os alunos da turma
-			Turma turma = turmaService.findById(turmaId);
-			Disciplina disciplina = disciplinaService.findById(disciplinaId);
-	
-			
-			int[] aulas = montarAulas(disciplina);
-			
-			modelView.addObject("turmaId", turmaId);
-			modelView.addObject("disciplinaId", disciplinaId);
-			modelView.addObject("aulaId", aulaId);
-			modelView.addObject("alunos", turmaService.listarAlunos(turma));
-			modelView.addObject("turmas", turmaService.listar());	
-			modelView.addObject("disciplinas", turma.getDisciplinas());	
-			modelView.addObject("aulas", aulas);
-			modelView.addObject("frequencia", chamadaService.listarFrequencia(turma, disciplina, aulaId));	
-			
-			
-			modelView.setViewName("chamada/listar");
-			
-			return modelView;		
+		//busca os alunos da turma
+		Turma turma = turmaService.findById(turmaId);
+		Disciplina disciplina = disciplinaService.findById(disciplinaId);
+
 		
+		int[] aulas = montarAulas(disciplina);
+		
+		modelView.addObject("turmaId", turmaId);
+		modelView.addObject("disciplinaId", disciplinaId);
+		modelView.addObject("aulaId", aulaId);
+		modelView.addObject("alunos", turmaService.listarAlunos(turma));
+		modelView.addObject("turmas", turmaService.listar());	
+		modelView.addObject("disciplinas", turma.getDisciplinas());	
+		modelView.addObject("aulas", aulas);
+		modelView.addObject("frequencia", chamadaService.listarFrequencia(turma, disciplina, aulaId));	
+		
+		
+		modelView.setViewName("chamada/listar");
+		
+		//sessao
+		session.setAttribute("turmaId", turmaId);
+		session.setAttribute("disciplinaId", disciplinaId);
+		session.setAttribute("aulaId", aulaId);		
+		
+		return modelView;		
+	
+		
+	}
+	
+	@RequestMapping(value="/frequencia/{alunoId}/{frequencia}", method = RequestMethod.GET)
+	@ResponseBody	
+	public ModelAndView frequencia(Locale locale, Model model, HttpSession session,
+			                       @PathVariable("alunoId") Long alunoId, @PathVariable("frequencia") Frequencia frequencia) {
+			
+		ModelAndView modelView = new ModelAndView();
+		
+		Long turmaId      = (Long) session.getAttribute("turmaId");
+		Long disciplinaId = (Long) session.getAttribute("disciplinaId");
+		int  aulaId       = (Integer) session.getAttribute("aulaId");
+		
+		Turma turma = turmaService.findById(turmaId);		
+		Disciplina disciplina = disciplinaService.findById(disciplinaId);
+		Aluno aluno = alunoService.findById(alunoId);
+		
+		try {
+			
+			Chamada chamada = new Chamada();
+			chamada.setAluno(aluno);
+			chamada.setAula(aulaId);
+			chamada.setDisciplina(disciplina);
+			chamada.setFrequencia(frequencia);
+			chamada.setTurma(turma);
+			
+			chamadaService.salvar(chamada);
+			
+			modelView.addObject("message", "Frequencia atualizada com sucesso!");
+			
+		} catch (ServiceException e) {
+			modelView.addObject("messageError", e.getMessage());
+		}
+		
+		
+		int[] aulas = montarAulas(disciplina);
+		
+		modelView.addObject("turmaId", turmaId);
+		modelView.addObject("disciplinaId", disciplinaId);
+		modelView.addObject("aulaId", aulaId);
+		modelView.addObject("alunos", turmaService.listarAlunos(turma));
+		modelView.addObject("turmas", turmaService.listar());	
+		modelView.addObject("disciplinas", turma.getDisciplinas());	
+		modelView.addObject("aulas", aulas);
+		modelView.addObject("frequencia", chamadaService.listarFrequencia(turma, disciplina, aulaId));	
+		
+		
+		modelView.setViewName("chamada/listar");
+		
+		return modelView;				
 		
 	}
 	
