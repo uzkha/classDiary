@@ -3,17 +3,22 @@ package br.com.classdiary;
 import java.util.List;
 import java.util.Locale;
 
+import org.hibernate.service.spi.ServiceException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import br.com.classdiary.model.Aluno;
 import br.com.classdiary.model.Disciplina;
 import br.com.classdiary.model.Turma;
+import br.com.classdiary.model.TurmaAluno;
+import br.com.classdiary.service.ChamadaService;
 import br.com.classdiary.service.DisciplinaService;
 import br.com.classdiary.service.TurmaService;
 
@@ -26,6 +31,9 @@ public class ChamadaController {
 	
 	@Autowired
 	private DisciplinaService disciplinaService;
+	
+	@Autowired
+	private ChamadaService chamadaService;
 	
 	@RequestMapping(value="", method = RequestMethod.GET)
 	@ResponseBody
@@ -60,6 +68,42 @@ public class ChamadaController {
 		//busca a turma
 		Disciplina disciplina = disciplinaService.findById(disciplinaId);
 		
+		int[] aulas = montarAulas(disciplina);
+		
+		return aulas;
+		
+	}
+	
+	@RequestMapping(value = "/pesquisar", method = RequestMethod.POST)
+	public ModelAndView pesquisar(Locale locale, ModelMap model, Long turmaId, Long disciplinaId, int aulaId) {
+		
+		ModelAndView modelView = new ModelAndView();
+		
+			//busca os alunos da turma
+			Turma turma = turmaService.findById(turmaId);
+			Disciplina disciplina = disciplinaService.findById(disciplinaId);
+	
+			
+			int[] aulas = montarAulas(disciplina);
+			
+			modelView.addObject("turmaId", turmaId);
+			modelView.addObject("disciplinaId", disciplinaId);
+			modelView.addObject("aulaId", aulaId);
+			modelView.addObject("alunos", turmaService.listarAlunos(turma));
+			modelView.addObject("turmas", turmaService.listar());	
+			modelView.addObject("disciplinas", turma.getDisciplinas());	
+			modelView.addObject("aulas", aulas);
+			modelView.addObject("frequencia", chamadaService.listarFrequencia(turma, disciplina, aulaId));	
+			
+			
+			modelView.setViewName("chamada/listar");
+			
+			return modelView;		
+		
+		
+	}
+	
+	private int[] montarAulas(Disciplina disciplina){
 		//retorna a lista de disciplinas da turma		
 		int numeroAulas = disciplina.getNumeroAula();
 		
@@ -70,7 +114,6 @@ public class ChamadaController {
 		}
 		
 		return aulas;
-		
 	}
 	
 }

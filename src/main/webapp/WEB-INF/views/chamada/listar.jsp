@@ -1,3 +1,4 @@
+<script src="${pageContext.request.contextPath}/resources/js/validation.js" type="text/javascript"></script>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <div id="container-large">
 	<div class="panel panel-default">
@@ -13,57 +14,79 @@
 					${messageError}
 				</div>
 			</c:if>
-	
 			<div id="container-large">
 				<div class="panel panel-default col-sm-8">
 					<div class="panel-heading">Seleção Turma/Disciplina/Aula</div>
-					<div class="panel-body">						
-						<div class="form-group">
-							<label for="lbTurma" class="col-sm-2 control-label">Turma</label>
-							<div class="col-sm-10">
-								<select name="turmaId" id="turma" class="form-control" onchange="loadDisciplinas()">
-									<option value="0">(Nenhum)</option> 		    
-									<c:forEach var="turma" items="${turmas}" varStatus="id">
-										<option value="${turma.id}">${turma.nome}</option>
-									</c:forEach>
-								</select>
+					<div class="panel-body">	
+						<form id="formChamadaPesquisa" class="form-horizontal" role="form" 
+						action="/classdiary/chamada/pesquisar" method="post">					
+							<div class="form-group">
+									<label for="lbTurma" class="col-sm-2 control-label">Turma</label>
+									<div class="col-sm-10">
+										<select name="turmaId" id="turma" class="form-control required" onchange="loadDisciplinas()">
+											<option value="">(Nenhum)</option> 		    
+											<c:forEach var="turma" items="${turmas}" varStatus="id">
+												<c:set var="selected" value=""/>
+												<c:if test="${turma.id == turmaId}">
+													<c:set var="selected" value="selected"/>
+												</c:if>									
+												<option ${selected} value="${turma.id}">${turma.nome}</option>										
+											</c:forEach>
+										</select>
+									</div>
+								</div>						
+								<div class="form-group">
+									<label for="lbDisciplina" class="col-sm-2 control-label">Disciplina</label>
+									<div class="col-sm-10">
+										<select name="disciplinaId" id="disciplina" class="form-control required" onchange="loadAulas()">
+											<option value="">(Nenhum)</option>
+											<c:forEach var="disciplina" items="${disciplinas}" varStatus="id">
+												<c:set var="selected" value=""/>
+												<c:if test="${disciplina.id == disciplinaId}">
+													<c:set var="selected" value="selected"/>
+												</c:if>		
+												<option ${selected} value="${disciplina.id}">${disciplina.nome}</option>
+											</c:forEach>
+										</select>
+									</div>
+								</div>
+								<div class="form-group">
+									<label for="lbAula" class="col-sm-2 control-label">Aula</label>
+									<div class="col-sm-10">
+										<select name="aulaId" id=aula class="form-control required" onchange="pesquisar()">
+											<option value="">(Nenhum)</option>
+											<c:forEach var="aula" items="${aulas}" varStatus="id">
+												<c:set var="selected" value=""/>
+												<c:if test="${aula == aulaId}">
+													<c:set var="selected" value="selected"/>
+												</c:if>		
+												<option ${selected} value="${aula}">${aula}</option>
+											</c:forEach>
+										</select>
+									</div>
+								</div>
+							<div class="form-group">
+								<div class="col-sm-offset-2 col-sm-10">									
+									<button type="submit" class="btn btn-default">Pesquisar</button>
+								</div>
 							</div>
-						</div>						
-						<div class="form-group">
-							<label for="lbDisciplina" class="col-sm-2 control-label">Disciplina</label>
-							<div class="col-sm-10">
-								<select name="disciplinaId" id="disciplina" class="form-control" onchange="loadAulas()">
-									<option value="0">(Nenhum)</option>
-									<c:forEach var="disciplina" items="${disciplinas}" varStatus="id">
-										<option value="${disciplina.id}">${disciplina.nome}</option>
-									</c:forEach>
-								</select>
-							</div>
-						</div>
-						<div class="form-group">
-							<label for="lbAula" class="col-sm-2 control-label">Aula</label>
-							<div class="col-sm-10">
-								<select name="aulaId" id=aula class="form-control">
-									<option value="0">(Nenhum)</option>
-									<c:forEach var="aula" items="${aulas}" varStatus="id">
-										<option value="${aula.id}">${aula.nome}</option>
-									</c:forEach>
-								</select>
-							</div>
-						</div>
+						</form>
 					</div>
 				</div>
 			</div>
 		
-			<table class="table table-striped table-hover">
-				<tr>
+			<table id="tablePesquisa" class="table table-striped table-hover">
+				<tr id="tr">
 					<th>Aluno</th>
 					<th>Frequencia</th>					
 				</tr>
-				<c:forEach var="aluno" items="${alunos}" varStatus="id">
-					<tr>						
-						<td>${aluno.nome}</td>						
-						<td>${frequencia}</td>						
+				<c:forEach var="turmaaluno" items="${alunos}" varStatus="id">
+					<tr id="tr_${turmaaluno.aluno.id}">						
+						<td>${turmaaluno.aluno.nome}</td>						
+						<td><input type="radio" name="frequencia${turmaaluno.aluno.id}" value="Presenca" >Presente
+							<input type="radio" name="frequencia${turmaaluno.aluno.id}" value="Falta" >Falto
+							<input type="radio" name="frequencia${turmaaluno.aluno.id}" value="Justificativa">Justifico
+						</td>						
 					</tr>
 				</c:forEach>
 			</table>
@@ -74,6 +97,7 @@
 	function loadDisciplinas(){	
 		clearDisciplinas();
 		clearAulas();
+		clearPesquisa();
 		var turma = $('#turma option:selected').index();
 		if(turma > 0){ 			 
 			//busca disciplinas da turma
@@ -105,6 +129,7 @@
 	}
 	function loadAulas(){	
 		clearAulas();
+		clearPesquisa();
 		var disciplina = $('#disciplina option:selected').index();
 		if(disciplina > 0){ 			 
 			//busca disciplinas da turma
@@ -131,14 +156,24 @@
 				 }
 			});
 
-			
 		}
 	}
-
+	function pesquisar(){
+		var aula = $('#aula option:selected').index();
+		if(aula > 0){
+			$( "#formChamadaPesquisa" ).submit();
+		}else{
+			clearPesquisa();
+		}
+	}
+	
 	function clearDisciplinas(){
-		$('#disciplina').children().remove().end().append('<option selected value="0">(Nenhum)</option>') ;
+		$('#disciplina').children().remove().end().append('<option selected value="">(Nenhum)</option>') ;
 	}
 	function clearAulas(){
-		$('#aula').children().remove().end().append('<option selected value="0">(Nenhum)</option>') ;
+		$('#aula').children().remove().end().append('<option selected value="">(Nenhum)</option>') ;
+	}
+	function clearPesquisa(){
+		$('tr[id*="tr_"]').remove();
 	}
 </script>
