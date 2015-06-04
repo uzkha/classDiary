@@ -81,12 +81,27 @@
 					<th>Frequencia</th>					
 				</tr>
 				<c:forEach var="turmaaluno" items="${alunos}" varStatus="id">
-					<tr id="tr_${turmaaluno.aluno.id}">						
+					<tr">						
 						<td>${turmaaluno.aluno.nome}</td>						
 						<td>
-						    <input type="radio" name="${turmaaluno.aluno.id}" onclick="setarFrequencia(this)" value="Presenca" >Presente
-							<input type="radio" name="${turmaaluno.aluno.id}" onclick="setarFrequencia(this)" value="Falta" >Falto
-							<input type="radio" name="${turmaaluno.aluno.id}" onclick="setarFrequencia(this)" value="Justificativa">Justifico
+							
+							<c:set var="presenca" value="null"/>
+							<c:set var="falta" value="null"/>
+							<c:set var="justificativa" value="null"/>
+							
+							<c:forEach var="frequencia" items="${frequencias}" varStatus="id">
+								<c:if test="${frequencia.aluno.id == turmaaluno.aluno.id }">
+									<c:choose>
+										<c:when test="${frequencia.frequencia == 'Presenca'}"><c:set var="presenca" value="checked"/></c:when>
+										<c:when test="${frequencia.frequencia == 'Falta'}"><c:set var="falta" value="checked"/></c:when>
+										<c:when test="${frequencia.frequencia == 'Justificativa'}"><c:set var="justificativa" value="checked"/></c:when>
+									</c:choose>
+								</c:if>
+							</c:forEach>
+						
+						    <input ${presenca} type="radio" name="${turmaaluno.aluno.id}" onclick="setarFrequencia(this)" value="Presenca" >Presente
+							<input ${falta} type="radio" name="${turmaaluno.aluno.id}" onclick="setarFrequencia(this)" value="Falta" >Falto
+							<input ${justificativa} type="radio" name="${turmaaluno.aluno.id}" onclick="setarFrequencia(this)" value="Justificativa">Justifico
 						</td>						
 					</tr>
 				</c:forEach>
@@ -96,20 +111,28 @@
 </div>
 <script type="text/javascript">
 	function setarFrequencia(evento){
+
 		var frequencia = evento.value;
 		var alunoId    = evento.name;
 
-		alert($('#turma').val());
+		var turmaId = $('#turma').val();
+		var disciplinaId = $('#disciplina').val();
+		var aulaId = $('#aula').val();
+
+		console.log("aula " + aulaId + "turma " + turmaId + " disciplinaId " + disciplinaId);
 
 		dataPost = {};
-		dataPost.idAluno = 1;
-		dataPost.idTuram = 14;
+		dataPost.alunoId = alunoId;
+		dataPost.turmaId = turmaId;
+		dataPost.frequencia = frequencia;
+		dataPost.disciplinaId = disciplinaId;
+		dataPost.aulaId = aulaId;
 		
 		//busca disciplinas da turma
 		$.ajax({
-			type: "GET",
-			url: "/classdiary/chamada/frequencia/"+alunoId+"/"+frequencia,
-			data: null,
+			type: "POST",
+			url: "/classdiary/chamada/frequencia",
+			data: dataPost,
 			success: function( data )
 			{
 				$( ".view_principal" ).html( data ); 

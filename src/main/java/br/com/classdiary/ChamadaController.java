@@ -84,7 +84,7 @@ public class ChamadaController {
 	}
 	
 	@RequestMapping(value = "/pesquisar", method = RequestMethod.POST)
-	public ModelAndView pesquisar(Locale locale, HttpSession session, ModelMap model, Long turmaId, Long disciplinaId, int aulaId) {
+	public ModelAndView pesquisar(Locale locale, ModelMap model, Long turmaId, Long disciplinaId, int aulaId) {
 		
 		ModelAndView modelView = new ModelAndView();
 		
@@ -102,32 +102,22 @@ public class ChamadaController {
 		modelView.addObject("turmas", turmaService.listar());	
 		modelView.addObject("disciplinas", turma.getDisciplinas());	
 		modelView.addObject("aulas", aulas);
-		modelView.addObject("frequencia", chamadaService.listarFrequencia(turma, disciplina, aulaId));	
+		modelView.addObject("frequencias", chamadaService.listarFrequencia(turma, disciplina, aulaId));	
 		
 		
 		modelView.setViewName("chamada/listar");
-		
-		//sessao
-		session.setAttribute("turmaId", turmaId);
-		session.setAttribute("disciplinaId", disciplinaId);
-		session.setAttribute("aulaId", aulaId);		
 		
 		return modelView;		
 	
 		
 	}
 	
-	@RequestMapping(value="/frequencia/{alunoId}/{frequencia}", method = RequestMethod.GET)
+	@RequestMapping(value="/frequencia", method = RequestMethod.POST)
 	@ResponseBody	
-	public ModelAndView frequencia(Locale locale, Model model, HttpSession session,
-			                       @PathVariable("alunoId") Long alunoId, @PathVariable("frequencia") Frequencia frequencia) {
+	public ModelAndView frequencia(Locale locale, Model model, Long alunoId, Frequencia frequencia, Long turmaId, Long disciplinaId, int aulaId) {
 			
 		ModelAndView modelView = new ModelAndView();
-		
-		Long turmaId      = (Long) session.getAttribute("turmaId");
-		Long disciplinaId = (Long) session.getAttribute("disciplinaId");
-		int  aulaId       = (Integer) session.getAttribute("aulaId");
-		
+				
 		Turma turma = turmaService.findById(turmaId);		
 		Disciplina disciplina = disciplinaService.findById(disciplinaId);
 		Aluno aluno = alunoService.findById(alunoId);
@@ -159,7 +149,7 @@ public class ChamadaController {
 		modelView.addObject("turmas", turmaService.listar());	
 		modelView.addObject("disciplinas", turma.getDisciplinas());	
 		modelView.addObject("aulas", aulas);
-		modelView.addObject("frequencia", chamadaService.listarFrequencia(turma, disciplina, aulaId));	
+		modelView.addObject("frequencias", chamadaService.listarFrequencia(turma, disciplina, aulaId));	
 		
 		
 		modelView.setViewName("chamada/listar");
