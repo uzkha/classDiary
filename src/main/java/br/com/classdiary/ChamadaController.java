@@ -1,10 +1,14 @@
 package br.com.classdiary;
 
+import java.io.IOException;
+import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
 import javax.servlet.http.HttpSession;
 
+import org.hibernate.engine.jdbc.spi.SqlExceptionHelper;
 import org.hibernate.service.spi.ServiceException;
 import org.omg.CORBA.Request;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +26,7 @@ import br.com.classdiary.model.Chamada;
 import br.com.classdiary.model.Disciplina;
 import br.com.classdiary.model.Turma;
 import br.com.classdiary.model.TurmaAluno;
+import br.com.classdiary.model.TurmaDisciplina;
 import br.com.classdiary.service.AlunoService;
 import br.com.classdiary.service.ChamadaService;
 import br.com.classdiary.service.DisciplinaService;
@@ -64,20 +69,33 @@ public class ChamadaController {
 				
 		//busca a turma
 		Turma turma = turmaService.findById(turmaId);
-		//retorna a lista de disciplinas da turma
-		return turma.getDisciplinas();		
+		
+
+		List<TurmaDisciplina> listaTurmaDisciplinas = turmaService.listarDisciplinas(turma);
+		List<Disciplina> listaDisciplinas = new ArrayList<Disciplina>();
+		
+		//retorna a lista de disciplinas da turma, para faciliar o controle na view
+		for(TurmaDisciplina turmaDisciplina : listaTurmaDisciplinas){
+			Disciplina disciplina = turmaDisciplina.getDisciplina();
+			listaDisciplinas.add(disciplina);
+		}
+		
+		return listaDisciplinas;
 		
 	}
 	
 	
-	@RequestMapping(value="/disciplinaaulas/{disciplinaId}", method = RequestMethod.GET)
+	@RequestMapping(value="/disciplinaaulas/{turmaId}/{disciplinaId}", method = RequestMethod.GET)
 	@ResponseBody	
-	public int[] displinaAulas(Locale locale, Model model, @PathVariable("disciplinaId") Long disciplinaId) {
-				
-		//busca a turma
+	public int[] displinaAulas(Locale locale, Model model, @PathVariable("turmaId") Long turmaId, @PathVariable("disciplinaId") Long disciplinaId) {
+		
+		Turma turma = turmaService.findById(turmaId);
 		Disciplina disciplina = disciplinaService.findById(disciplinaId);
 		
-		int[] aulas = montarAulas(disciplina);
+		//busca a turma
+		TurmaDisciplina turmaDisciplina = turmaService.findByTurmaDisciplina(turma, disciplina);
+		
+		int[] aulas = montarAulas(turmaDisciplina);
 		
 		return aulas;
 		
@@ -91,16 +109,17 @@ public class ChamadaController {
 		//busca os alunos da turma
 		Turma turma = turmaService.findById(turmaId);
 		Disciplina disciplina = disciplinaService.findById(disciplinaId);
-
 		
-		int[] aulas = montarAulas(disciplina);
+		TurmaDisciplina turmaDisciplina = turmaService.findByTurmaDisciplina(turma, disciplina);
+		
+		int[] aulas = montarAulas(turmaDisciplina);
 		
 		modelView.addObject("turmaId", turmaId);
 		modelView.addObject("disciplinaId", disciplinaId);
 		modelView.addObject("aulaId", aulaId);
 		modelView.addObject("alunos", turmaService.listarAlunos(turma));
 		modelView.addObject("turmas", turmaService.listar());	
-		modelView.addObject("disciplinas", turma.getDisciplinas());	
+		modelView.addObject("disciplinas", turmaService.listarDisciplinas(turma));	
 		modelView.addObject("aulas", aulas);
 		modelView.addObject("frequencias", chamadaService.listarFrequencia(turma, disciplina, aulaId));	
 		
@@ -114,10 +133,11 @@ public class ChamadaController {
 	
 	@RequestMapping(value="/frequencia", method = RequestMethod.POST)
 	@ResponseBody	
-	public ModelAndView frequencia(Locale locale, Model model, Long alunoId, Frequencia frequencia, Long turmaId, Long disciplinaId, int aulaId) {
+	public String frequencia(Locale locale, Model model, Long alunoId, Frequencia frequencia, Long turmaId, Long disciplinaId, int aulaId) {
 			
-		ModelAndView modelView = new ModelAndView();
-				
+		//ModelAndView modelView = new ModelAndView();
+		String message;	
+		
 		Turma turma = turmaService.findById(turmaId);		
 		Disciplina disciplina = disciplinaService.findById(disciplinaId);
 		Aluno aluno = alunoService.findById(alunoId);
@@ -125,42 +145,53 @@ public class ChamadaController {
 		try {
 			
 			Chamada chamada = new Chamada();
-			chamada.setAluno(aluno);
-			chamada.setAula(aulaId);
-			chamada.setDisciplina(disciplina);
-			chamada.setFrequencia(frequencia);
-			chamada.setTurma(turma);
+			
+			//verifica se ja existe registro para o aluno
+			chamada = chamadaService.listarFrequencia(turma, disciplina, aulaId, aluno);
+			
+			//se existir recupera o id para o update
+			if (chamada.getId() == null){				
+				chamada.setAluno(aluno);
+				chamada.setAula(aulaId);
+				chamada.setDisciplina(disciplina);
+				chamada.setFrequencia(frequencia);
+				chamada.setTurma(turma);
+			}else{
+				chamada.setFrequencia(frequencia);
+			}
 			
 			chamadaService.salvar(chamada);
 			
-			modelView.addObject("message", "Frequencia atualizada com sucesso!");
+			//modelView.addObject("message", "Frequencia atualizada com sucesso!");
+			message = "Frequencia atualizada com sucesso para aluno: " + aluno.getNome();
 			
-		} catch (ServiceException e) {
-			modelView.addObject("messageError", e.getMessage());
+		} catch (Exception  e) {
+			//modelView.addObject("messageError", e.getMessage());
+			message = "Ocorreu um erro, frequencia não foi salva. <br>" + e.getMessage();
 		}
 		
 		
-		int[] aulas = montarAulas(disciplina);
+		//int[] aulas = montarAulas(disciplina);
 		
-		modelView.addObject("turmaId", turmaId);
-		modelView.addObject("disciplinaId", disciplinaId);
-		modelView.addObject("aulaId", aulaId);
-		modelView.addObject("alunos", turmaService.listarAlunos(turma));
-		modelView.addObject("turmas", turmaService.listar());	
-		modelView.addObject("disciplinas", turma.getDisciplinas());	
-		modelView.addObject("aulas", aulas);
-		modelView.addObject("frequencias", chamadaService.listarFrequencia(turma, disciplina, aulaId));	
+		//modelView.addObject("turmaId", turmaId);
+		//modelView.addObject("disciplinaId", disciplinaId);
+		//modelView.addObject("aulaId", aulaId);
+		//modelView.addObject("alunos", turmaService.listarAlunos(turma));
+		//modelView.addObject("turmas", turmaService.listar());	
+		//modelView.addObject("disciplinas", turma.getDisciplinas());	
+		//modelView.addObject("aulas", aulas);
+		//modelView.addObject("frequencias", chamadaService.listarFrequencia(turma, disciplina, aulaId));	
 		
 		
-		modelView.setViewName("chamada/listar");
+		//modelView.setViewName("chamada/listar");
 		
-		return modelView;				
+		return message;				
 		
 	}
 	
-	private int[] montarAulas(Disciplina disciplina){
+	private int[] montarAulas(TurmaDisciplina turmaDisciplina){
 		//retorna a lista de disciplinas da turma		
-		int numeroAulas = disciplina.getNumeroAula();
+		int numeroAulas = turmaDisciplina.getNumeroAulas();
 		
 		int[] aulas = new int[numeroAulas];
 		

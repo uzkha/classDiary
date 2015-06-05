@@ -8,6 +8,7 @@ import br.com.classdiary.model.Aluno;
 import br.com.classdiary.model.Disciplina;
 import br.com.classdiary.model.Turma;
 import br.com.classdiary.model.TurmaAluno;
+import br.com.classdiary.model.TurmaDisciplina;
 
 public interface TurmaService {
 	
@@ -28,4 +29,16 @@ public interface TurmaService {
 	public void deletarAluno(List<TurmaAluno> listaTurmaAluno);
 	
 	public TurmaAluno findByTurmaAluno(Turma turma, Aluno aluno);
+	
+	public void salvarDisciplina(TurmaDisciplina turmaDisciplina);
+	
+	public void deletarDisciplina(TurmaDisciplina turmaDisciplina);
+	
+	public void deletarDisciplinaTurma(List<TurmaDisciplina> listaTurmaDisciplinas);
+	
+	public TurmaDisciplina findByTurmaDisciplina(Turma turma, Disciplina disciplina);
+	
+	public List<TurmaDisciplina> listarDisciplinas(Turma turma);
+	
+	public TurmaDisciplina findByTurmaDisciplina(Long id);
 }

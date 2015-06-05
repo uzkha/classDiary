@@ -20,24 +20,33 @@
 			</div>
 		</c:if>
 
-			<a onclick="ajaxGet('/classdiary/turma/disciplinasEditar/${turmaId}')" href="javascript:;"><img
-				src="${pageContext.request.contextPath}/resources/img/update.png"
+			<a onclick="ajaxGet('/classdiary/turma/disciplinaAdicionar/${turmaId}')" href="javascript:;"><img
+				src="${pageContext.request.contextPath}/resources/img/add.png"
 				width="24" height="24" data-toggle="tooltip"
 				title="Editar"></a>
 
 			<table class="table table-striped table-hover">
 				<tr>
 					<th>Id</th>
-					<th>Disciplina</th>							
+					<th>Disciplina</th>		
+					<th>Professor</th>
+					<th>Aulas</th>									
 					<th>&nbsp</th>	
 				</tr>
-				<c:forEach var="disciplina" items="${disciplinas}" varStatus="id">
+				<c:forEach var="turmaDisciplina" items="${disciplinas}" varStatus="id">
 					<tr>
-						<td>${disciplina.id}</td>
-						<td>${disciplina.nome}</td>										
-
+						<td>${turmaDisciplina.disciplina.id}</td>
+						<td>${turmaDisciplina.disciplina.nome}</td>	
+						<td>${turmaDisciplina.professor.nome}</td>
+						<td>${turmaDisciplina.numeroAulas}</td>										
+						
+						<td><a onclick="ajaxGet('/classdiary/turma/disciplinaEditar/${turmaId}/${turmaDisciplina.disciplina.id}')" href="javascript:;"><img
+								src="${pageContext.request.contextPath}/resources/img/update.png"
+								width="18" height="18" data-toggle="tooltip" title="Editar"></a>
+						</td>
+					
 						<td><a href="javascript:;"
-							onclick="deleteItem(event, '${disciplina.nome}', '/classdiary/turma/disciplinaDeletar/${turmaId}/${disciplina.id}')"><img
+							onclick="deleteItem(event, '${turmaDisciplina.disciplina.nome}', '/classdiary/turma/disciplinaDeletar/${turmaId}/${turmaDisciplina.disciplina.id}')"><img
 								src="${pageContext.request.contextPath}/resources/img/delete.png"
 								height="18" data-toggle="tooltip" title="Excluir"></a></td>
 

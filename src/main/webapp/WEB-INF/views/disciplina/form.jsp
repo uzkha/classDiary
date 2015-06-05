@@ -24,14 +24,7 @@
 							value="${disciplina.nome}">
 					</div>
 				</div>	
-				<div class="form-group">
-					<label for="lbaula" class="col-sm-2 control-label">Numero de Aulas</label>
-					<div class="col-sm-8">
-						<input type="text" class="form-control" id="numeroAula"
-							placeholder="insira o número de aulas" name="numeroAula"
-							value="${disciplina.numeroAula}">
-					</div>
-				</div>											
+													
 				<input type="hidden" name="id" value="${disciplina.id}">
 				<div class="form-group">
 					<div class="col-sm-offset-2 col-sm-10">						

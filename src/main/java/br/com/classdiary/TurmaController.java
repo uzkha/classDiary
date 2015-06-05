@@ -19,10 +19,13 @@ import org.springframework.web.servlet.ModelAndView;
 
 import br.com.classdiary.model.Aluno;
 import br.com.classdiary.model.Disciplina;
+import br.com.classdiary.model.Professor;
 import br.com.classdiary.model.Turma;
 import br.com.classdiary.model.TurmaAluno;
+import br.com.classdiary.model.TurmaDisciplina;
 import br.com.classdiary.service.AlunoService;
 import br.com.classdiary.service.DisciplinaService;
+import br.com.classdiary.service.ProfessorService;
 import br.com.classdiary.service.TurmaService;
 
 
@@ -38,6 +41,9 @@ public class TurmaController {
 	
 	@Autowired
 	private AlunoService alunoService;
+	
+	@Autowired
+	private ProfessorService professorService;
 	
 	@RequestMapping(value="", method = RequestMethod.GET)
 	public ModelAndView listar(Locale locale, Model model) {
@@ -141,7 +147,7 @@ public class TurmaController {
 		ModelAndView modelView = new ModelAndView();	
 		
 		Turma turma = turmaService.findById(id);
-		modelView.addObject("disciplinas", turma.getDisciplinas());
+		modelView.addObject("disciplinas", turmaService.listarDisciplinas(turma));
 		modelView.addObject("turmaId", id);
 		modelView.setViewName("turma/listaDisciplinas");
 		
@@ -150,15 +156,37 @@ public class TurmaController {
 	}
 	
 	
-	@RequestMapping(value = "/disciplinasEditar/{id}", method = RequestMethod.GET)
-	public ModelAndView disciplinasEditar(Locale locale, Model model, @PathVariable("id") Long id) {
+	@RequestMapping(value = "/disciplinaEditar/{id}/{disciplinaId}", method = RequestMethod.GET)
+	public ModelAndView disciplinasEditar(Locale locale, Model model, @PathVariable("id") Long id, @PathVariable("disciplinaId") Long disciplinaId) {
 		
 		ModelAndView modelView = new ModelAndView();	
 		
 		Turma turma = turmaService.findById(id);
-		modelView.addObject("disciplinasTurma", turma.getDisciplinas());
+		Disciplina disciplina = disciplinaService.findById(disciplinaId);
+		
+		TurmaDisciplina turmaDisciplina = turmaService.findByTurmaDisciplina(turma, disciplina);
+		
+		modelView.addObject("disabled", "disabled");
 		modelView.addObject("disciplinas", disciplinaService.listar());
 		modelView.addObject("turmaId", id);
+		modelView.addObject("professores", professorService.listar());
+		modelView.addObject("turmaDisciplina", turmaDisciplina);
+		
+		modelView.setViewName("turma/disciplinaEditar");
+		
+		return modelView;		
+		
+	}
+	
+	@RequestMapping(value = "/disciplinaAdicionar/{id}", method = RequestMethod.GET)
+	public ModelAndView disciplinasAdicionar(Locale locale, Model model, @PathVariable("id") Long id) {
+		
+		ModelAndView modelView = new ModelAndView();	
+		
+		Turma turma = turmaService.findById(id);
+		modelView.addObject("disciplinas", disciplinaService.listar());
+		modelView.addObject("turmaId", id);
+		modelView.addObject("professores", professorService.listar());
 		modelView.setViewName("turma/disciplinaEditar");
 		
 		return modelView;		
@@ -173,18 +201,17 @@ public class TurmaController {
 		
 		Turma turma = turmaService.findById(id);
 		Disciplina disciplina = disciplinaService.findById(disciplinaId);
+		TurmaDisciplina turmaDisciplina = turmaService.findByTurmaDisciplina(turma, disciplina);
 		
-		//remove o item da lista
-		turma.getDisciplinas().remove(disciplina);
 		
 		try{
-			turmaService.salvar(turma);
+			turmaService.deletarDisciplina(turmaDisciplina);
 			modelView.addObject("message", "Disciplina removida com sucesso!");
 		}catch (ServiceException e){
 			modelView.addObject("messageError", e.getMessage());
 		}
 				
-		modelView.addObject("disciplinas", turma.getDisciplinas());		
+		modelView.addObject("disciplinas", turmaService.listarDisciplinas(turma));		
 		modelView.addObject("turmaId", id);
 		modelView.setViewName("turma/listaDisciplinas");
 		
@@ -194,43 +221,35 @@ public class TurmaController {
 	
 	
 	@RequestMapping(value = "/salvarDisciplina", method = RequestMethod.POST)
-	public ModelAndView salvarDisciplina(Locale locale, ModelMap model, Long turmaId, Long[] disciplinas ) {
+	public ModelAndView salvarDisciplina(Locale locale, ModelMap model, Long turmaId, Long disciplinaId, Long professorId, TurmaDisciplina turmaDisciplina) {
 		
 		ModelAndView modelView = new ModelAndView();
 		
-		try{				
-			
-			ArrayList<Disciplina> listaDisciplina = new ArrayList<Disciplina>();
-			Turma turma = turmaService.findById(turmaId);
-			
-			//limpa a lista de disciplinas
-			turma.getDisciplinas().clear();
-			
-			 for (int i = 0; i < disciplinas.length; i++) {
+		Turma turma = turmaService.findById(turmaId);	
+		Disciplina disciplina = disciplinaService.findById(disciplinaId);
+		Professor professor = professorService.findById(professorId);
+		
+		turmaDisciplina.setDisciplina(disciplina);	
+		turmaDisciplina.setTurma(turma);
+		turmaDisciplina.setProfessor(professor);
+		
+		try{							
+			 
+			turmaService.salvarDisciplina(turmaDisciplina);
 				 
-				 Disciplina disciplina = disciplinaService.findById(disciplinas[i]);				 
-				 listaDisciplina.add(disciplina);
-			  }
-			
-			//seta a lista de disciplinas na turma
-			turma.setDisciplinas(listaDisciplina);
-			
-			
-			//salvar turma disciplina
-			turmaService.salvar(turma);		
-			
-			modelView.addObject("disciplinas", turma.getDisciplinas());
+			modelView.addObject("disciplinas", turmaService.listarDisciplinas(turma));
 			modelView.addObject("turmaId", turma.getId());
 			modelView.addObject("message", "Cadastro alterado com sucesso!");
 			modelView.setViewName("turma/listaDisciplinas");
 			
 			return modelView;		
 			
-		}catch (ServiceException e){
+		}catch (Exception e){
 			
-			Turma turma = turmaService.findById(turmaId);
-			modelView.addObject("disciplinasTurma", turma.getDisciplinas());
+			
+			modelView.addObject("turmaDisciplina", turmaDisciplina);
 			modelView.addObject("disciplinas", disciplinaService.listar());
+			modelView.addObject("professores", professorService.listar());
 			modelView.addObject("turmaId", turma.getId());
 			modelView.addObject("messageError", e.getMessage());
 			modelView.setViewName("turma/disciplinaEditar");

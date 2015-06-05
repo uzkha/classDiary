@@ -13,28 +13,69 @@
 		<div class="panel-body">
 		<c:if test="${mensage != null}">
 			<div id="result-form" class="alert alert-success" role="alert">
-				${mensagem}
+				${mensage}
 			</div>
 		</c:if>
-		<c:if test="${mensagemError != null}">
+		<c:if test="${mensageError != null}">
 			<div id="result-form" class="alert alert-danger" role="alert">
-				${mensagemErro}
+				${mensageErro}
 			</div>
 		</c:if>
 			<form id="formTurmaDisciplina" class="form-horizontal" role="form" 
 				action="/classdiary/turma/salvarDisciplina" method="post">	
-				<select name="disciplinas" multiple>
-					<c:forEach var="disciplina" items="${disciplinas}" varStatus="id">
-						<c:set var="selected" value="null"/>
-						<c:forEach var="disciplinaTurma" items="${disciplinasTurma}" varStatus="id">
-							<c:if test="${disciplinaTurma.id == disciplina.id}">
-								<c:set var="selected" value="selected"/>	
-							</c:if>
-						</c:forEach>											
-						<option ${selected} value="${disciplina.id}">${disciplina.nome}</option>	
-					</c:forEach>					
-				</select>			
-				<input type="hidden" name="turmaId" value="${turmaId}">
+				
+				<div class="form-group">
+					<label for="lbDisciplina" class="col-sm-2 control-label">Disciplina</label>
+					<div class="col-sm-4">
+						<select ${disabled} name="disciplinaId" class="form-control">
+							<option value="">(Nenhum)</option>
+							<c:forEach var="disciplina" items="${disciplinas}" varStatus="id">
+								<c:choose>
+									<c:when test="${disciplina.id == turmaDisciplina.disciplina.id}">
+										<option selected value="${disciplina.id}">${disciplina.nome}</option>
+									</c:when>
+									<c:otherwise>
+										<option value="${disciplina.id}">${disciplina.nome}</option>
+									</c:otherwise>
+								</c:choose>
+							</c:forEach>
+						</select>
+					</div>
+				</div>
+				
+				<div class="form-group">
+					<label for="lbProfessor" class="col-sm-2 control-label">Professor</label>
+					<div class="col-sm-4">
+						<select  name="professorId" class="form-control">
+							<option value="">(Nenhum)</option>
+							<c:forEach var="professor" items="${professores}" varStatus="id">
+								<c:choose>
+									<c:when test="${professor.id == turmaDisciplina.professor.id}">
+										<option selected value="${professor.id}">${professor.nome}</option>
+									</c:when>
+									<c:otherwise>
+										<option value="${professor.id}">${professor.nome}</option>
+									</c:otherwise>
+								</c:choose>
+							</c:forEach>
+						</select>
+					</div>
+				</div>
+				
+				<div class="form-group">
+					<label for="lbaula" class="col-sm-2 control-label">Numero de Aulas</label>
+					<div class="col-sm-4">
+						<input type="text" class="form-control" id="numeroAulas"
+							placeholder="insira o número de aulas" name="numeroAulas"
+							value="${turmaDisciplina.numeroAulas}">
+					</div>
+				</div>		
+				<c:if test="${turmaDisciplina.turmaDisciplinaId > 0}">
+					<input type="hidden" name="disciplinaId" id="disciplinaIdII" value="${turmaDisciplina.disciplina.id}">
+				</c:if>
+				<input type="hidden" name="turmaDisciplinaId" id="turmaDisciplinaId" value="${turmaDisciplina.turmaDisciplinaId}">				
+				<input type="hidden" name="turmaId" id="turmaId" value="${turmaId}">
+				
 				<div class="form-group">
 					<div class="col-sm-offset-2 col-sm-10">						
 						<a class="btn btn-default" onclick="ajaxGet('/classdiary/turma/disciplinas/${turmaId}')">Cancelar</a>

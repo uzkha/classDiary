@@ -56,7 +56,7 @@ public class ProfessorController {
 		try{				
 			
 			professorService.salvar(professor);			
-			modelView.addObject("professors", professorService.listar());
+			modelView.addObject("professores", professorService.listar());
 			modelView.addObject("message", "Cadastro efetuado/alterado com sucesso!");
 			modelView.setViewName("professor/listar");
 			

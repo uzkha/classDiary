@@ -13,6 +13,7 @@ import br.com.classdiary.model.Aluno;
 import br.com.classdiary.model.Disciplina;
 import br.com.classdiary.model.Turma;
 import br.com.classdiary.model.TurmaAluno;
+import br.com.classdiary.model.TurmaDisciplina;
 
 @Repository
 public class TurmaDao extends AbstractClassSessionFactory{
@@ -70,6 +71,42 @@ public class TurmaDao extends AbstractClassSessionFactory{
 		
 		return turmaAlunos;
 		
+	}
+
+	public List<TurmaDisciplina> listarDisciplinas(Turma turma,	Disciplina disciplina) {
+		Criteria cr = getSession().createCriteria(TurmaDisciplina.class);
+		cr.add(Restrictions.eq("turma", turma));
+		cr.add(Restrictions.eq("disciplina", disciplina));
+		List<TurmaDisciplina> turmaDisciplinas = cr.list();
+		
+		return turmaDisciplinas;
+	}
+
+	public void deletarDisciplina(List<TurmaDisciplina> turmaDisciplinas) {
+		for (TurmaDisciplina turmaDisciplina : turmaDisciplinas){
+			deletarDisciplina(turmaDisciplina);
+		}		
+	}
+
+	public void deletarDisciplina(TurmaDisciplina turmaDisciplina) {
+		getSession().delete(turmaDisciplina);			
+	}
+
+	public void salvarDisciplina(TurmaDisciplina turmaDisciplina) {
+		super.getSession().saveOrUpdate(turmaDisciplina);
+	}
+
+	public List<TurmaDisciplina> listarDisciplinas(Turma turma) {
+		Criteria cr = getSession().createCriteria(TurmaDisciplina.class);
+		cr.add(Restrictions.eq("turma", turma));
+		List<TurmaDisciplina> turmaDisciplinas = cr.list();
+		
+		return turmaDisciplinas; 
+	}
+
+	public TurmaDisciplina findByTurmaDisciplina(Long id) {
+		TurmaDisciplina turmaDisciplina = (TurmaDisciplina)getSession().load(TurmaDisciplina.class, id);
+		return turmaDisciplina;
 	}
 
 }

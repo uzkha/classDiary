@@ -4,6 +4,7 @@
 	<div class="panel panel-default">
 		<div class="panel-heading">Chamada</div>
 		<div class="panel-body">
+			<div id="retornoFrequencia"></div>
 			<c:if test="${message != null}">
 				<div id="result-form" class="alert alert-success" role="alert">
 					${message}
@@ -40,12 +41,12 @@
 									<div class="col-sm-10">
 										<select name="disciplinaId" id="disciplina" class="form-control required" onchange="loadAulas()">
 											<option value="">(Nenhum)</option>
-											<c:forEach var="disciplina" items="${disciplinas}" varStatus="id">
+											<c:forEach var="turmaDisciplina" items="${disciplinas}" varStatus="id">
 												<c:set var="selected" value=""/>
-												<c:if test="${disciplina.id == disciplinaId}">
+												<c:if test="${turmaDisciplina.disciplina.id == disciplinaId}">
 													<c:set var="selected" value="selected"/>
 												</c:if>		
-												<option ${selected} value="${disciplina.id}">${disciplina.nome}</option>
+												<option ${selected} value="${turmaDisciplina.disciplina.id}">${turmaDisciplina.disciplina.nome}</option>
 											</c:forEach>
 										</select>
 									</div>
@@ -88,9 +89,9 @@
 							<c:set var="presenca" value="null"/>
 							<c:set var="falta" value="null"/>
 							<c:set var="justificativa" value="null"/>
-							
+													
 							<c:forEach var="frequencia" items="${frequencias}" varStatus="id">
-								<c:if test="${frequencia.aluno.id == turmaaluno.aluno.id }">
+								<c:if test="${frequencia.aluno.id == turmaaluno.aluno.id }">								
 									<c:choose>
 										<c:when test="${frequencia.frequencia == 'Presenca'}"><c:set var="presenca" value="checked"/></c:when>
 										<c:when test="${frequencia.frequencia == 'Falta'}"><c:set var="falta" value="checked"/></c:when>
@@ -99,9 +100,9 @@
 								</c:if>
 							</c:forEach>
 						
-						    <input ${presenca} type="radio" name="${turmaaluno.aluno.id}" onclick="setarFrequencia(this)" value="Presenca" >Presente
-							<input ${falta} type="radio" name="${turmaaluno.aluno.id}" onclick="setarFrequencia(this)" value="Falta" >Falto
-							<input ${justificativa} type="radio" name="${turmaaluno.aluno.id}" onclick="setarFrequencia(this)" value="Justificativa">Justifico
+						    <input ${presenca} type="radio" name="${turmaaluno.aluno.id}" onclick="setarFrequencia(this)" value="Presenca" >Presença
+							<input ${falta} type="radio" name="${turmaaluno.aluno.id}" onclick="setarFrequencia(this)" value="Falta" >Falta
+							<input ${justificativa} type="radio" name="${turmaaluno.aluno.id}" onclick="setarFrequencia(this)" value="Justificativa">Justificativa
 						</td>						
 					</tr>
 				</c:forEach>
@@ -111,15 +112,13 @@
 </div>
 <script type="text/javascript">
 	function setarFrequencia(evento){
-
+		
 		var frequencia = evento.value;
 		var alunoId    = evento.name;
 
 		var turmaId = $('#turma').val();
 		var disciplinaId = $('#disciplina').val();
 		var aulaId = $('#aula').val();
-
-		console.log("aula " + aulaId + "turma " + turmaId + " disciplinaId " + disciplinaId);
 
 		dataPost = {};
 		dataPost.alunoId = alunoId;
@@ -135,7 +134,19 @@
 			data: dataPost,
 			success: function( data )
 			{
-				$( ".view_principal" ).html( data ); 
+				//$( ".view_principal" ).html( data );
+				var sucesso = data.search("sucesso");
+
+				if(sucesso > 0){
+					$( "#retornoFrequencia" ).removeClass( "alert alert-danger" );
+					$( "#retornoFrequencia" ).addClass( "alert alert-success" );							
+				}else{
+					$( "#retornoFrequencia" ).removeClass( "alert alert-success" );
+					$( "#retornoFrequencia" ).addClass( "alert alert-danger" );	
+					evento.checked = null;
+				}							
+				
+				$( "#retornoFrequencia" ).html( data ); 
 			},
 			error: function(XMLHttpRequest, textStatus, errorThrown) {		    
 				
@@ -186,15 +197,17 @@
 			
 		}
 	}
+	
 	function loadAulas(){	
 		clearAulas();
 		clearPesquisa();
+		var turma = $('#turma option:selected').index();
 		var disciplina = $('#disciplina option:selected').index();
 		if(disciplina > 0){ 			 
 			//busca disciplinas da turma
 			$.ajax({
 				type: "GET",
-				url: "/classdiary/chamada/disciplinaaulas/"+disciplina,
+				url: "/classdiary/chamada/disciplinaaulas/"+turma+"/"+disciplina,
 				data: null,
 				success: function( data )
 				{

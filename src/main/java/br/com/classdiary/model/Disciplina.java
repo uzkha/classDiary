@@ -22,9 +22,6 @@ public class Disciplina {
 	@NotNull
 	private String nome;
 	
-	@Column
-	@NotNull
-	private int numeroAula;
 		
 	public Long getId() {
 		return id;
@@ -40,14 +37,6 @@ public class Disciplina {
 
 	public void setNome(String nome) {
 		this.nome = nome;
-	}
-
-	public int getNumeroAula() {
-		return numeroAula;
-	}
-
-	public void setNumeroAula(int numeroAula) {
-		this.numeroAula = numeroAula;
 	}
 	
 }

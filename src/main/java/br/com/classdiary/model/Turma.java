@@ -29,9 +29,9 @@ public class Turma {
 	@NotNull
 	private String nome;
 	
-	@ManyToMany(cascade=CascadeType.ALL, fetch=FetchType.LAZY)
+	/*@ManyToMany(cascade=CascadeType.ALL, fetch=FetchType.LAZY)
     @JoinTable(name="turma_disciplina", joinColumns={@JoinColumn(name="turma_id", referencedColumnName="id")}, inverseJoinColumns={@JoinColumn(name="disciplina_id", referencedColumnName="id")})
-	private List<Disciplina> disciplinas;
+	private List<Disciplina> disciplinas;*/
 	
 		
 	public Long getId() {
@@ -48,14 +48,6 @@ public class Turma {
 
 	public void setNome(String nome) {
 		this.nome = nome;
-	}
-
-	public List<Disciplina> getDisciplinas() {
-		return disciplinas;
-	}
-
-	public void setDisciplinas(List<Disciplina> disciplinas) {
-		this.disciplinas = disciplinas;
 	}
 	
 }

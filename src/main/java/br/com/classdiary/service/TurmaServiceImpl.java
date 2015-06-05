@@ -14,6 +14,7 @@ import br.com.classdiary.model.Aluno;
 import br.com.classdiary.model.Disciplina;
 import br.com.classdiary.model.Turma;
 import br.com.classdiary.model.TurmaAluno;
+import br.com.classdiary.model.TurmaDisciplina;
 
 
 @Service
@@ -78,6 +79,48 @@ public class TurmaServiceImpl implements TurmaService{
 		}
 		
 		return turmaAluno;
+	}
+
+	@Override
+	public void salvarDisciplina(TurmaDisciplina turmaDisciplina) {
+		turmaDao.salvarDisciplina(turmaDisciplina);			
+	}
+
+	@Override
+	public void deletarDisciplina(TurmaDisciplina turmaDisciplina) {
+		turmaDao.deletarDisciplina(turmaDisciplina);		
+	}
+
+	@Override
+	public void deletarDisciplinaTurma(List<TurmaDisciplina> turmaDisciplinas){
+		turmaDao.deletarDisciplina(turmaDisciplinas);		
+	}
+
+	@Override
+	public TurmaDisciplina findByTurmaDisciplina(Turma turma, Disciplina disciplina) {
+		List<TurmaDisciplina> listaDisciplinas =  turmaDao.listarDisciplinas(turma, disciplina);
+		
+		TurmaDisciplina turmaDisciplina = new TurmaDisciplina();
+		
+		if(listaDisciplinas.size() != 1){
+			throw new ServiceException("Ocorreu um erro ao buscar ao buscar a Disciplina na Turma para fazer e exclusão.");
+		}else{
+			for (TurmaDisciplina turmaDisciplinaLista : listaDisciplinas){
+				turmaDisciplina = turmaDisciplinaLista;
+			}
+		}
+		
+		return turmaDisciplina;
+	}
+
+	@Override
+	public List<TurmaDisciplina> listarDisciplinas(Turma turma) {
+		return turmaDao.listarDisciplinas(turma);
+	}
+
+	@Override
+	public TurmaDisciplina findByTurmaDisciplina(Long id) {
+		return turmaDao.findByTurmaDisciplina(id);
 	}
 
 }

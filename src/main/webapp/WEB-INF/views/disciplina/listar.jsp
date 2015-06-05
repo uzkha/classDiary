@@ -22,8 +22,7 @@
 			<table class="table table-striped table-hover">
 				<tr>
 					<th>Id</th>
-					<th>Nome</th>	
-					<th>Aulas</th>					
+					<th>Nome</th>										
 					<th>&nbsp</th>
 					<th>&nbsp</th>
 				</tr>
@@ -31,8 +30,7 @@
 					<tr>
 						<td>${disciplina.id}</td>
 						<td>${disciplina.nome}</td>		
-						<td>${disciplina.numeroAula}</td>					
-						
+															
 						<td><a onclick="ajaxGet('/classdiary/disciplina/editar/${disciplina.id}')" href="javascript:;"><img
 								src="${pageContext.request.contextPath}/resources/img/update.png"
 								width="18" height="18" data-toggle="tooltip" title="Editar"></a>
