@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.ResponseStatus;
+
 
 import br.com.classdiary.model.Turma;
 import br.com.classdiary.service.TurmaService;
@@ -28,10 +28,11 @@ public class ApiTurmaController {
 		return turmaService.listar();
     }
 	
-	@RequestMapping(method=RequestMethod.GET, produces="application/json", value="getTurmasByName")
+	@RequestMapping(method=RequestMethod.GET, produces="application/json", value="getTurmasByName/{nome}")
 	@ResponseBody
-    public  List<Turma> getTurmasByName(@PathVariable("nome") String nome) {
-		return null;
+    public  List<Turma> getTurmasByName(@PathVariable("nome") String nome) {	
+		nome = nome + "%";
+		return turmaService.findByName(nome);		
     }
 	
 

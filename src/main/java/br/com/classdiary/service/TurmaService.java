@@ -41,4 +41,6 @@ public interface TurmaService {
 	public List<TurmaDisciplina> listarDisciplinas(Turma turma);
 	
 	public TurmaDisciplina findByTurmaDisciplina(Long id);
+	
+	public List<Turma> findByName(String nome);
 }

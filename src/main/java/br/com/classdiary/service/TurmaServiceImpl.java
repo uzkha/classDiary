@@ -123,4 +123,9 @@ public class TurmaServiceImpl implements TurmaService{
 		return turmaDao.findByTurmaDisciplina(id);
 	}
 
+	@Override
+	public List<Turma> findByName(String nome) {
+		return turmaDao.findByName(nome);
+	}
+
 }

@@ -108,5 +108,13 @@ public class TurmaDao extends AbstractClassSessionFactory{
 		TurmaDisciplina turmaDisciplina = (TurmaDisciplina)getSession().load(TurmaDisciplina.class, id);
 		return turmaDisciplina;
 	}
+	
+	public List<Turma> findByName(String nome) {
+		Criteria cr = getSession().createCriteria(Turma.class);
+		cr.add(Restrictions.like("nome", nome));
+		List<Turma> listaTurmas = cr.list();
+		
+		return listaTurmas; 
+	}
 
 }
