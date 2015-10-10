@@ -84,9 +84,9 @@
 				<div class="form-group">
 					<label for="lbDataInicio" class="col-sm-2 control-label">Data de Inicio</label>
 					<div class="col-sm-4">
-						<input type="date" class="form-control" id="dataInicio"
-							placeholder="insira a data de inicio" name="dataInicio"
-							value="${turmaDisciplina.dataInicio}">
+						<input type="date" class="form-control" id="data"
+							placeholder="insira a data de inicio" name="data"
+							value="${data}">
 					</div>
 				</div>	
 				

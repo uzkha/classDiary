@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
+import org.hibernate.mapping.AuxiliaryDatabaseObject;
 import org.hibernate.service.spi.ServiceException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -26,6 +27,7 @@ import br.com.classdiary.service.DisciplinaService;
 import br.com.classdiary.service.ProfessorService;
 import br.com.classdiary.service.SalaService;
 import br.com.classdiary.service.TurmaService;
+import br.com.classdiary.util.Auxiliar;
 
 
 @Controller
@@ -174,6 +176,7 @@ public class TurmaController {
 		modelView.addObject("professores", professorService.listar());
 		modelView.addObject("salas", salaService.listar());
 		modelView.addObject("turmaDisciplina", turmaDisciplina);
+		modelView.addObject("data", Auxiliar.dateToString(turmaDisciplina.getDataInicio()));
 		
 		modelView.setViewName("turma/disciplinaEditar");
 		
@@ -224,22 +227,26 @@ public class TurmaController {
 	
 	
 	@RequestMapping(value = "/salvarDisciplina", method = RequestMethod.POST)
-	public ModelAndView salvarDisciplina(Locale locale, ModelMap model, Long turmaId, Long disciplinaId, Long professorId, Long salaId, TurmaDisciplina turmaDisciplina) {
+	public ModelAndView salvarDisciplina(Locale locale, ModelMap model, Long turmaId, Long disciplinaId, Long professorId, Long salaId, String data, TurmaDisciplina turmaDisciplina) {
 		
 		ModelAndView modelView = new ModelAndView();
-		
 		Turma turma = turmaService.findById(turmaId);	
-		Disciplina disciplina = disciplinaService.findById(disciplinaId);
-		Professor professor = professorService.findById(professorId);
-		Sala sala = salaService.findById(salaId);
 		
-		turmaDisciplina.setDisciplina(disciplina);	
-		turmaDisciplina.setTurma(turma);
-		turmaDisciplina.setProfessor(professor);
-		turmaDisciplina.setSala(sala);
+		try{				
+			
+			
+			Disciplina disciplina = disciplinaService.findById(disciplinaId);
+			Professor professor = professorService.findById(professorId);
+			Sala sala = salaService.findById(salaId);
+			
+			turmaDisciplina.setDataInicio(Auxiliar.stringToDate(data));
+			
+			turmaDisciplina.setDisciplina(disciplina);	
+			turmaDisciplina.setTurma(turma);
+			turmaDisciplina.setProfessor(professor);
+			turmaDisciplina.setSala(sala);
 		
-		try{							
-			 
+										 
 			turmaService.salvarDisciplina(turmaDisciplina);
 				 
 			modelView.addObject("disciplinas", turmaService.listarDisciplinas(turma));
