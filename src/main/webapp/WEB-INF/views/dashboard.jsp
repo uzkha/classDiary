@@ -20,6 +20,8 @@
     <!-- Custom CSS -->
     <link href="${pageContext.request.contextPath}/resources/bootstrap/css/shop-item.css" rel="stylesheet">
         <link href="${pageContext.request.contextPath}/resources/css/admin.css" rel="stylesheet">
+       
+      
 
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -38,6 +40,8 @@
 
     <!-- Bootstrap Core JavaScript -->
     <script src="${pageContext.request.contextPath}/resources/bootstrap/js/bootstrap.min.js"></script>
+    
+    <link href="${pageContext.request.contextPath}/resources/bootstrap/datepicker/css/datepicker3.css"	rel="stylesheet" type="text/css" />
 	
 </head>
 
@@ -73,9 +77,10 @@
                 </div>
                 <div class="list-group">
                     <a href="#" class="list-group-item active">Cadastros</a>
-                    <a href="javascript:;" onclick="ajaxGet('/classdiary/aluno/')" class="list-group-item">Alunos</a>
-                    <a href="javascript:;" onclick="ajaxGet('/classdiary/disciplina/')" class="list-group-item">Disciplinas</a>
+                    <a href="javascript:;" onclick="ajaxGet('/classdiary/aluno/')" class="list-group-item">Aluno</a>
+                    <a href="javascript:;" onclick="ajaxGet('/classdiary/disciplina/')" class="list-group-item">Disciplina</a>
                     <a href="javascript:;" onclick="ajaxGet('/classdiary/professor/')" class="list-group-item">Professor</a>
+                     <a href="javascript:;" onclick="ajaxGet('/classdiary/sala/')" class="list-group-item">Sala de Aula</a>
                     <a href="javascript:;" onclick="ajaxGet('/classdiary/turma/')" class="list-group-item">Turma</a>
                 </div>
             </div>  
@@ -203,6 +208,8 @@
 		</div>
 	</div>
 </div>
+	
+
 
 </html>
 

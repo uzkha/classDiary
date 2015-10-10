@@ -63,6 +63,43 @@
 				</div>
 				
 				<div class="form-group">
+					<label for="lbSala" class="col-sm-2 control-label">Sala</label>
+					<div class="col-sm-4">
+						<select  name="salaId" class="form-control">
+							<option value="">(Nenhum)</option>
+							<c:forEach var="sala" items="${salas}" varStatus="id">
+								<c:choose>
+									<c:when test="${sala.id == turmaDisciplina.sala.id}">
+										<option selected value="${sala.id}">${sala.nome}</option>
+									</c:when>
+									<c:otherwise>
+										<option value="${sala.id}">${sala.nome}</option>
+									</c:otherwise>
+								</c:choose>
+							</c:forEach>
+						</select>
+					</div>
+				</div>
+				
+				<div class="form-group">
+					<label for="lbDataInicio" class="col-sm-2 control-label">Data de Inicio</label>
+					<div class="col-sm-4">
+						<input type="date" class="form-control" id="dataInicio"
+							placeholder="insira a data de inicio" name="dataInicio"
+							value="${turmaDisciplina.dataInicio}">
+					</div>
+				</div>	
+				
+				<div class="form-group">
+					<label for="lbaula" class="col-sm-2 control-label">Intervalo</label>
+					<div class="col-sm-4">
+						<input type="text" class="form-control" id="intervalo"
+							placeholder="intervalo em dias entre aulas" name="intervalo"
+							value="${turmaDisciplina.intervalo}">
+					</div>
+				</div>	
+				
+				<div class="form-group">
 					<label for="lbaula" class="col-sm-2 control-label">Numero de Aulas</label>
 					<div class="col-sm-4">
 						<input type="text" class="form-control" id="numeroAulas"

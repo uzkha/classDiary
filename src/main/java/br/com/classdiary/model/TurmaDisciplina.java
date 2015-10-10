@@ -1,5 +1,7 @@
 package br.com.classdiary.model;
 
+import java.util.Date;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -33,6 +35,18 @@ public class TurmaDisciplina {
 	@ManyToOne
     @JoinColumn(nullable=false)
 	private Professor professor;	
+	
+	@ManyToOne
+    @JoinColumn(nullable=false)
+	private Sala sala;	
+	
+	@Column
+	@NotNull
+	private Date dataInicio;
+	
+	@Column
+	@NotNull
+	private int intervalo;
 	
 	@Column
 	@NotNull
@@ -81,6 +95,29 @@ public class TurmaDisciplina {
 	public void setNumeroAulas(int numeroAulas) {
 		this.numeroAulas = numeroAulas;
 	}
-	
+
+	public Sala getSala() {
+		return sala;
+	}
+
+	public void setSala(Sala sala) {
+		this.sala = sala;
+	}
+
+	public Date getDataInicio() {
+		return dataInicio;
+	}
+
+	public void setDataInicio(Date dataInicio) {
+		this.dataInicio = dataInicio;
+	}
+
+	public int getIntervalo() {
+		return intervalo;
+	}
+
+	public void setIntervalo(int intervalo) {
+		this.intervalo = intervalo;
+	}
 	
 }

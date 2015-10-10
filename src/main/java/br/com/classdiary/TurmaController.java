@@ -1,11 +1,8 @@
 package br.com.classdiary;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
-
-import javassist.bytecode.stackmap.BasicBlock.Catch;
 
 import org.hibernate.service.spi.ServiceException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,12 +17,14 @@ import org.springframework.web.servlet.ModelAndView;
 import br.com.classdiary.model.Aluno;
 import br.com.classdiary.model.Disciplina;
 import br.com.classdiary.model.Professor;
+import br.com.classdiary.model.Sala;
 import br.com.classdiary.model.Turma;
 import br.com.classdiary.model.TurmaAluno;
 import br.com.classdiary.model.TurmaDisciplina;
 import br.com.classdiary.service.AlunoService;
 import br.com.classdiary.service.DisciplinaService;
 import br.com.classdiary.service.ProfessorService;
+import br.com.classdiary.service.SalaService;
 import br.com.classdiary.service.TurmaService;
 
 
@@ -44,6 +43,9 @@ public class TurmaController {
 	
 	@Autowired
 	private ProfessorService professorService;
+	
+	@Autowired
+	private SalaService salaService;
 	
 	@RequestMapping(value="", method = RequestMethod.GET)
 	public ModelAndView listar(Locale locale, Model model) {
@@ -170,6 +172,7 @@ public class TurmaController {
 		modelView.addObject("disciplinas", disciplinaService.listar());
 		modelView.addObject("turmaId", id);
 		modelView.addObject("professores", professorService.listar());
+		modelView.addObject("salas", salaService.listar());
 		modelView.addObject("turmaDisciplina", turmaDisciplina);
 		
 		modelView.setViewName("turma/disciplinaEditar");
@@ -183,10 +186,10 @@ public class TurmaController {
 		
 		ModelAndView modelView = new ModelAndView();	
 		
-		Turma turma = turmaService.findById(id);
 		modelView.addObject("disciplinas", disciplinaService.listar());
 		modelView.addObject("turmaId", id);
 		modelView.addObject("professores", professorService.listar());
+		modelView.addObject("salas", salaService.listar());
 		modelView.setViewName("turma/disciplinaEditar");
 		
 		return modelView;		
@@ -221,17 +224,19 @@ public class TurmaController {
 	
 	
 	@RequestMapping(value = "/salvarDisciplina", method = RequestMethod.POST)
-	public ModelAndView salvarDisciplina(Locale locale, ModelMap model, Long turmaId, Long disciplinaId, Long professorId, TurmaDisciplina turmaDisciplina) {
+	public ModelAndView salvarDisciplina(Locale locale, ModelMap model, Long turmaId, Long disciplinaId, Long professorId, Long salaId, TurmaDisciplina turmaDisciplina) {
 		
 		ModelAndView modelView = new ModelAndView();
 		
 		Turma turma = turmaService.findById(turmaId);	
 		Disciplina disciplina = disciplinaService.findById(disciplinaId);
 		Professor professor = professorService.findById(professorId);
+		Sala sala = salaService.findById(salaId);
 		
 		turmaDisciplina.setDisciplina(disciplina);	
 		turmaDisciplina.setTurma(turma);
 		turmaDisciplina.setProfessor(professor);
+		turmaDisciplina.setSala(sala);
 		
 		try{							
 			 
@@ -250,6 +255,7 @@ public class TurmaController {
 			modelView.addObject("turmaDisciplina", turmaDisciplina);
 			modelView.addObject("disciplinas", disciplinaService.listar());
 			modelView.addObject("professores", professorService.listar());
+			modelView.addObject("salas", salaService.listar());
 			modelView.addObject("turmaId", turma.getId());
 			modelView.addObject("messageError", e.getMessage());
 			modelView.setViewName("turma/disciplinaEditar");

@@ -53,6 +53,59 @@ $(document).ready(function () {
 
 });
 
+
+$(document).ready(function () {
+    $("#formSala").validate({
+    	
+    	 //envia o formulario via ajax
+        submitHandler: function(form){
+        	
+			var dados = $( form ).serialize();      
+			
+			$.ajax({
+				type: "POST",
+				url: "/classdiary/sala/salvar",
+				data: dados,
+				success: function( data )
+				{
+					$( ".view_principal" ).html( data );
+				},
+				error: function(XMLHttpRequest, textStatus, errorThrown) {		    
+					
+					var mensagem = XMLHttpRequest.responseText;		
+					
+					var naoFunction = function() {
+						return;
+					};		
+					//mostra modal com erro
+					showError(mensagem, naoFunction, 'Erro de Requisição');
+					
+				 }
+			});
+
+			return false;
+		},
+    	
+        // Define as regras
+        rules: {
+            "nome": {
+                // campoNome será obrigatório (required) e terá tamanho mínimo (minLength)
+                required: true, minlength: 3
+           },
+            "latitude": {
+                // campoNome será obrigatório (required) e terá tamanho mínimo (minLength)
+                required: true, 
+            },
+            "longitude": {
+                // campoNome será obrigatório (required) e terá tamanho mínimo (minLength)
+                required: true, 
+            },
+         },
+    });
+
+});
+
+
 $(document).ready(function () {
     $("#formProfessor").validate({
     	
@@ -231,10 +284,18 @@ $(document).ready(function () {
     	
         // Define as regras
         rules: {
-            disciplinas: {
+            disciplinaId: {
                 // campoNome será obrigatório (required) e terá tamanho mínimo (minLength)
                 required: true,
-            },                      
+            },   
+            professorId: {
+                // campoNome será obrigatório (required) e terá tamanho mínimo (minLength)
+                required: true,
+            },  
+            salaId: {
+                // campoNome será obrigatório (required) e terá tamanho mínimo (minLength)
+                required: true,
+            },  
         },
     });
 

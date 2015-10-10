@@ -30,6 +30,7 @@
 					<th>Id</th>
 					<th>Disciplina</th>		
 					<th>Professor</th>
+					<th>Sala</th>
 					<th>Aulas</th>									
 					<th>&nbsp</th>	
 				</tr>
@@ -38,6 +39,7 @@
 						<td>${turmaDisciplina.disciplina.id}</td>
 						<td>${turmaDisciplina.disciplina.nome}</td>	
 						<td>${turmaDisciplina.professor.nome}</td>
+						<td>${turmaDisciplina.sala.nome}</td>
 						<td>${turmaDisciplina.numeroAulas}</td>										
 						
 						<td><a onclick="ajaxGet('/classdiary/turma/disciplinaEditar/${turmaId}/${turmaDisciplina.disciplina.id}')" href="javascript:;"><img
