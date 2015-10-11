@@ -24,6 +24,25 @@
 							value="${aluno.nome}">
 					</div>
 				</div>
+				
+				<div class="form-group">
+					<label for="lbmatricula" class="col-sm-2 control-label">Matricula</label>
+					<div class="col-sm-8">
+						<input type="text" class="form-control" id="matricula"
+						placeholder="insira a matricula"
+							name="matricula" value="${aluno.matricula}">
+					</div>
+				</div>
+				
+				<div class="form-group">
+					<label for="lbsenha" class="col-sm-2 control-label">Senha</label>
+					<div class="col-sm-8">
+						<input type="password" class="form-control" id="senha"
+						placeholder="insira a senha"
+							name="senha" value="${aluno.senha}">
+					</div>
+				</div>
+				
 				<div class="form-group">
 					<label for="lbemail" class="col-sm-2 control-label">Email</label>
 					<div class="col-sm-8">

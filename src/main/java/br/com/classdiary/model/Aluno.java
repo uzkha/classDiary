@@ -33,6 +33,14 @@ public class Aluno {
 	@Column(length = 50)
 	@NotNull
 	private String email;
+	
+	@Column(length = 18)
+	@NotNull
+	private int matricula;
+	
+	@Column(length = 128)
+	@NotNull
+	private String senha;
 
 	public Long getId() {
 		return id;
@@ -72,6 +80,22 @@ public class Aluno {
 
 	public void setEmail(String email) {
 		this.email = email;
+	}
+
+	public int getMatricula() {
+		return matricula;
+	}
+
+	public void setMatricula(int matricula) {
+		this.matricula = matricula;
+	}
+
+	public String getSenha() {
+		return senha;
+	}
+
+	public void setSenha(String senha) {
+		this.senha = senha;
 	}
 	
 }

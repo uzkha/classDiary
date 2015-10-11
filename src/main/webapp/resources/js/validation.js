@@ -48,6 +48,14 @@ $(document).ready(function () {
                 // campoNome será obrigatório (required) e terá tamanho mínimo (minLength)
                 required: true,
             },
+            "senha": {
+                // campoNome será obrigatório (required) e terá tamanho mínimo (minLength)
+                required: true,
+            },
+            "matricula": {
+                // campoNome será obrigatório (required) e terá tamanho mínimo (minLength)
+                required: true,
+            },
          },
     });
 
