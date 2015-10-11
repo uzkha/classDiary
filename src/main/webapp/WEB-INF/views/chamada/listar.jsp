@@ -246,6 +246,7 @@
 		$('#aula').children().remove().end().append('<option selected value="">(Nenhum)</option>') ;
 	}
 	function clearPesquisa(){
-		$('tr[id*="tr_"]').remove();
+		//$('tr[id*="tr_"]').remove();
+		$("#tablePesquisa td").remove();
 	}
 </script>
