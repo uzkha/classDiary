@@ -34,13 +34,17 @@ public class Aluno {
 	@NotNull
 	private String email;
 	
-	@Column(length = 18)
+	@Column
 	@NotNull
-	private int matricula;
+	private Long matricula;
 	
 	@Column(length = 128)
 	@NotNull
 	private String senha;
+	
+	@Column(length = 128)
+	@NotNull
+	private String chave;
 
 	public Long getId() {
 		return id;
@@ -82,11 +86,11 @@ public class Aluno {
 		this.email = email;
 	}
 
-	public int getMatricula() {
+	public Long getMatricula() {
 		return matricula;
 	}
 
-	public void setMatricula(int matricula) {
+	public void setMatricula(Long matricula) {
 		this.matricula = matricula;
 	}
 
@@ -97,5 +101,14 @@ public class Aluno {
 	public void setSenha(String senha) {
 		this.senha = senha;
 	}
+
+	public String getChave() {
+		return chave;
+	}
+
+	public void setChave(String chave) {
+		this.chave = chave;
+	}
+	
 	
 }

@@ -14,4 +14,6 @@ public interface AlunoService {
 	
 	public void deletar(Long id);
 
+	Aluno validarMatricula(Long matricula, String senha);
+
 }

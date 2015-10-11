@@ -3,6 +3,9 @@ package br.com.classdiary.util;
 
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.math.BigInteger;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -52,4 +55,24 @@ public class Auxiliar {
         return dateFormat.parse(data);
     }
 
+
+    public static String converterToMD5(String texto) {
+    	
+        MessageDigest md;
+		try {
+			md = MessageDigest.getInstance("MD5");
+		
+ 
+        BigInteger hash = new BigInteger(1, md.digest(texto.getBytes()));
+ 
+        	return String.format("%32x", hash);
+        
+		} catch (NoSuchAlgorithmException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return null;
+		}
+    }
+		
+    
 }

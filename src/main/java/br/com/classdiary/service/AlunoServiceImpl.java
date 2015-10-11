@@ -36,5 +36,10 @@ public class AlunoServiceImpl implements AlunoService{
 	public void deletar(Long id) {
 		alunoDao.deletar(id);
 	}	
+	
+	@Override
+	public Aluno validarMatricula(Long matricula, String senha) {
+		return alunoDao.validarMatricula(matricula, senha);
+	}
 
 }

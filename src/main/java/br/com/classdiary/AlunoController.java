@@ -1,5 +1,6 @@
 package br.com.classdiary;
 
+import java.util.Date;
 import java.util.Locale;
 
 import javassist.bytecode.stackmap.BasicBlock.Catch;
@@ -16,6 +17,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import br.com.classdiary.model.Aluno;
 import br.com.classdiary.service.AlunoService;
+import br.com.classdiary.util.Auxiliar;
 
 
 @Controller
@@ -55,6 +57,9 @@ public class AlunoController {
 		
 		try{				
 			
+			aluno.setSenha(Auxiliar.converterToMD5(aluno.getSenha()));
+			aluno.setChave(Auxiliar.converterToMD5(aluno.getMatricula().toString()));
+			
 			alunoService.salvar(aluno);			
 			modelView.addObject("alunos", alunoService.listar());
 			modelView.addObject("message", "Cadastro efetuado/alterado com sucesso!");
@@ -79,6 +84,8 @@ public class AlunoController {
 		ModelAndView modelView = new ModelAndView();	
 		
 		Aluno aluno = alunoService.findById(id);
+		aluno.setSenha(null); //limpa conteudo MD5
+		
 		modelView.addObject("aluno", aluno);
 		modelView.setViewName("aluno/form");
 		
