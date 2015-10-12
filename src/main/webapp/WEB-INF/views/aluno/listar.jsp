@@ -23,7 +23,7 @@
 				<tr>
 					<th>Id</th>
 					<th>Nome</th>
-					<th>Telefone</th>
+					<th>Matricula</th>
 					<th>Email</th>
 					<th>&nbsp</th>
 					<th>&nbsp</th>
@@ -32,7 +32,7 @@
 					<tr>
 						<td>${aluno.id}</td>
 						<td>${aluno.nome}</td>						
-						<td>${aluno.telefone}</td>
+						<td>${aluno.matricula}</td>
 						<td>${aluno.email}</td>
 
 						<td><a onclick="ajaxGet('/classdiary/aluno/editar/${aluno.id}')" href="javascript:;"><img

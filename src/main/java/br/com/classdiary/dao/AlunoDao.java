@@ -52,4 +52,21 @@ public class AlunoDao extends AbstractClassSessionFactory{
 		
 	}
 
+	
+	public Aluno findByChave(String chave) {
+		
+		Criteria cr = getSession().createCriteria(Aluno.class);
+		cr.add(Restrictions.eq("chave", chave));		
+		List<Aluno> listaAluno = cr.list();
+		
+		Aluno aluno = new Aluno();
+		
+		for(Aluno alunoLista : listaAluno){
+			aluno = alunoLista;
+		}
+		
+		return aluno; 
+		
+	}
+
 }

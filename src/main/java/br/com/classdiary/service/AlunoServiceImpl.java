@@ -42,4 +42,9 @@ public class AlunoServiceImpl implements AlunoService{
 		return alunoDao.validarMatricula(matricula, senha);
 	}
 
+	@Override
+	public Aluno findByChave(String chave) {
+		return alunoDao.findByChave(chave);
+	}
+
 }
