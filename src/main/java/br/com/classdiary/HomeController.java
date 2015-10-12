@@ -1,5 +1,6 @@
 package br.com.classdiary;
 
+import java.security.Principal;
 import java.text.DateFormat;
 import java.util.Date;
 import java.util.Locale;
@@ -36,5 +37,17 @@ public class HomeController {
 		modelView.setViewName("home");
 		return modelView;		
 		
+	}
+	
+	@RequestMapping(value = "/403", method = RequestMethod.GET)
+	public ModelAndView accesssDenied(Principal user) {
+ 
+		ModelAndView model = new ModelAndView(); 
+		
+		model.addObject("msg", "Você não possui permissão para acessar esta página.");		
+ 
+		model.setViewName("403");
+		return model;
+ 
 	}
 }

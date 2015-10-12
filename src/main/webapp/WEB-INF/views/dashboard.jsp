@@ -60,6 +60,12 @@
                 </button>
                 <a class="navbar-brand" href="/classdiary">Class Diary</a>
             </div>
+            
+     		<ul class="nav navbar-right top-nav">				
+				<li><a href="<c:url value="/j_spring_security_logout"/>"><i
+					class="fa fa-fw fa-power-off"></i> Sair</a></li>				
+			</ul>
+            
             <!-- /.navbar-collapse -->
         </div>
         <!-- /.container -->
