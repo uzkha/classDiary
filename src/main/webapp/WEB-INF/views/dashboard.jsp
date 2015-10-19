@@ -216,6 +216,26 @@
 </div>
 	
 
+<div id="div-componente-qr-code" class="modal fade">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal"
+					aria-hidden="true">&times;</button>
+				<h4 id="h-componente-qr-code-titulo" class="modal-title">QR Code</h4>
+			</div>
+			<div class="modal-body">
+				<p id="p-componente-qr-code">IMAGEM</p>
+			</div>
+			<div class="modal-footer">
+				<button id="btn-componente-qr-code-fechar" type="button"
+					class="btn btn-default" data-dismiss="modal">Fechar</button>
+			</div>
+		</div>
+	</div>
+</div>	
+	
+
 
 </html>
 

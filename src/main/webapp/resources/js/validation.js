@@ -402,6 +402,29 @@ function showError(mensagem, naoFunction) {
 	
 }
 
+function qrCode(imagem){
+	
+	var naoFunction = function() {
+		return;
+	};		
+	
+	imagem = '<img src="' + imagem + '">' 
+	
+	showQrCode(imagem, naoFunction);
+	
+}
+
+function showQrCode(imagem, naoFunction) {
+	
+	$('#p-componente-qr-code').html(imagem);
+	
+	$('#btn-componente-qr-code-nao').unbind('click');
+	
+	$('#btn-componente-qr-code-nao').click(naoFunction);
+			
+	$('#div-componente-qr-code').modal('toggle');
+	
+}
 
 function confirmDelete(descricaoItem, simFunction, naoFunction) {
 	titulo = 'Confirmar';

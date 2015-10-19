@@ -1,12 +1,21 @@
 package br.com.classdiary;
 
+import java.io.ByteArrayOutputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import org.hibernate.mapping.AuxiliaryDatabaseObject;
 import org.hibernate.service.spi.ServiceException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
@@ -28,6 +37,8 @@ import br.com.classdiary.service.ProfessorService;
 import br.com.classdiary.service.SalaService;
 import br.com.classdiary.service.TurmaService;
 import br.com.classdiary.util.Auxiliar;
+import net.glxn.qrgen.QRCode;
+import net.glxn.qrgen.image.ImageType;
 
 
 @Controller
@@ -183,7 +194,35 @@ public class TurmaController {
 		return modelView;		
 		
 	}
+		
 	
+	private void gerarQrCode(String turmaId, String disciplinaId) {
+		
+		
+		int size = 480; // tamanho defaul qrcode	
+		String path = "C:\\Program Files\\Apache Software Foundation\\Tomcat 8.0_Tomcat8080\\webapps\\classdiary\\resources\\qrcode\\"; 
+		String nomeArquivo = path + turmaId + "_" + disciplinaId + ".jpg";
+		String qrCode = "turma=" + turmaId + ";disciplina=" + disciplinaId + ";";
+		
+		try {
+		    
+		    FileOutputStream f = new FileOutputStream(nomeArquivo);
+		    ByteArrayOutputStream out = QRCode.from(qrCode)
+		            .to(ImageType.JPG)
+		            .withSize(size, size)
+		            .stream();
+		     
+		    
+		    f.write(out.toByteArray());
+		    f.close();
+		    
+		    
+		} catch (IOException ex) {
+		    ex.printStackTrace();		   
+		}
+		
+	}
+
 	@RequestMapping(value = "/disciplinaAdicionar/{id}", method = RequestMethod.GET)
 	public ModelAndView disciplinasAdicionar(Locale locale, Model model, @PathVariable("id") Long id) {
 		
@@ -248,6 +287,8 @@ public class TurmaController {
 		
 										 
 			turmaService.salvarDisciplina(turmaDisciplina);
+			
+			gerarQrCode(turma.getId().toString(), disciplina.getId().toString());
 				 
 			modelView.addObject("disciplinas", turmaService.listarDisciplinas(turma));
 			modelView.addObject("turmaId", turma.getId());

@@ -33,6 +33,8 @@
 					<th>Sala</th>
 					<th>Aulas</th>									
 					<th>&nbsp</th>	
+					<th>&nbsp</th>	
+					<th>&nbsp</th>	
 				</tr>
 				<c:forEach var="turmaDisciplina" items="${disciplinas}" varStatus="id">
 					<tr>
@@ -41,6 +43,11 @@
 						<td>${turmaDisciplina.professor.nome}</td>
 						<td>${turmaDisciplina.sala.nome}</td>
 						<td>${turmaDisciplina.numeroAulas}</td>										
+						
+						<td><a href="javascript:;"
+							    onclick="qrCode('${pageContext.request.contextPath}/resources/qrcode/${turmaId}_${turmaDisciplina.disciplina.id}.jpg')"><img
+								src="${pageContext.request.contextPath}/resources/img/qr_code.jpg"
+								height="18" data-toggle="tooltip" title="QR Code"></a></td>
 						
 						<td><a onclick="ajaxGet('/classdiary/turma/disciplinaEditar/${turmaId}/${turmaDisciplina.disciplina.id}')" href="javascript:;"><img
 								src="${pageContext.request.contextPath}/resources/img/update.png"
