@@ -10,9 +10,12 @@ import java.util.Locale;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import javax.servlet.ServletContext;
+
 import org.hibernate.mapping.AuxiliaryDatabaseObject;
 import org.hibernate.service.spi.ServiceException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -59,6 +62,9 @@ public class TurmaController {
 	
 	@Autowired
 	private SalaService salaService;
+	
+	@Autowired
+    private ServletContext servletContext;
 	
 	@RequestMapping(value="", method = RequestMethod.GET)
 	public ModelAndView listar(Locale locale, Model model) {
@@ -199,8 +205,11 @@ public class TurmaController {
 	private void gerarQrCode(String turmaId, String disciplinaId) {
 		
 		
+		
 		int size = 480; // tamanho defaul qrcode	
-		String path = "C:\\Program Files\\Apache Software Foundation\\Tomcat 8.0_Tomcat8080\\webapps\\classdiary\\resources\\qrcode\\"; 
+		//String path = "C:\\Program Files\\Apache Software Foundation\\Tomcat 8.0_Tomcat8080\\webapps\\classdiary\\resources\\qrcode\\"; 
+		String path = "/home/uzumaki/workspace/classdiary/src/main/webapp/resources/qrcode/"; //servletContext.getContextPath();
+		
 		String nomeArquivo = path + turmaId + "_" + disciplinaId + ".jpg";
 		String qrCode = "turma=" + turmaId + ";disciplina=" + disciplinaId + ";";
 		
