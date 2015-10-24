@@ -208,7 +208,7 @@ public class TurmaController {
 		
 		int size = 480; // tamanho defaul qrcode	
 		//String path = "C:\\Program Files\\Apache Software Foundation\\Tomcat 8.0_Tomcat8080\\webapps\\classdiary\\resources\\qrcode\\"; 
-		String path = "/home/uzumaki/workspace/classdiary/src/main/webapp/resources/qrcode/"; //servletContext.getContextPath();
+		String path = "D:\\Apps\\workspace\\classdiary\\src\\main\\webapp\\resources\\qrcode"; //servletContext.getContextPath();
 		
 		String nomeArquivo = path + turmaId + "_" + disciplinaId + ".jpg";
 		String qrCode = "turma=" + turmaId + ";disciplina=" + disciplinaId + ";";
